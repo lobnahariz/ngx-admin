@@ -6,7 +6,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ECommerceComponent } from './e-commerce/e-commerce.component';
 import { NotFoundComponent } from './miscellaneous/not-found/not-found.component';
 
-const routes: Routes = [{
+const routes: Routes = [
+  {
   path: '',
   component: PagesComponent,
   children: [{
@@ -34,6 +35,9 @@ const routes: Routes = [{
     path: 'produit',
     loadChildren: './produit/produit.module#ProduitModule',
   }, {
+    path: 'devis',
+    loadChildren: './devis/devis.module#DevisModule',
+  },  {
     path: 'forms',
     loadChildren: './forms/forms.module#FormsModule',
   }, {

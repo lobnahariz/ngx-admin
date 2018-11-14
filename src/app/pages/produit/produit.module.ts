@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { ProduitRoutingModule , routedComponents} from './produit-routing.module';
-import {ProduitService} from './produit.service';
+import {ProduitService} from '../../service/produit.service';
 import { ThemeModule } from '../../@theme/theme.module';
 
 @NgModule({

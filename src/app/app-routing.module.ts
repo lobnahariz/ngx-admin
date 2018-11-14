@@ -1,5 +1,6 @@
 import { ExtraOptions, RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
+import {LoginComponent} from './login/login.component';
 import {
   NbAuthComponent,
   NbLoginComponent,
@@ -10,6 +11,8 @@ import {
 } from '@nebular/auth';
 
 const routes: Routes = [
+  { path: 'login', component: LoginComponent },
+
   { path: 'pages', loadChildren: 'app/pages/pages.module#PagesModule' },
   {
     path: 'auth',
@@ -21,7 +24,7 @@ const routes: Routes = [
       },
       {
         path: 'login',
-        component: NbLoginComponent,
+        component: LoginComponent,
       },
       {
         path: 'register',

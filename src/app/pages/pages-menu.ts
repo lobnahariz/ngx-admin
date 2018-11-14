@@ -66,6 +66,16 @@ export const MENU_ITEMS: NbMenuItem[] = [
     ],
   },
   {
+    title: 'Devis',
+    icon: 'nb-tables',
+    children: [
+      {
+        title: 'Nouveau Devis',
+        link: '/pages/devis/nouveauDevis',
+      },
+    ],
+  },
+  {
     title: 'Forms',
     icon: 'nb-compose',
     children: [

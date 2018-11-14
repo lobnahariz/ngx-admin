@@ -1,0 +1,40 @@
+<div class="row">
+<div class="col-lg-12">
+  <form [formGroup]="devisForm">
+<nb-card>
+  <nb-card-header>  <button (click)="addDevis()" [disabled]="devisForm.pristine || devisForm.invalid" class="btn btn-outline-secondary">Nouveau Devis </button></nb-card-header>
+  <nb-card-body class="col-xxl">
+
+    <div class="row full-name-inputs">
+      <div class="col-sm-3 input-group-rounded">
+        <input type="text" placeholder="Reference" class="form-control"  formControlName="ref"/>
+        <div class="alert alert-danger" style="margin-top: 3px" *ngIf="devisForm.controls['ref'].invalid && (devisForm.controls['ref'].touched || devisForm.controls['ref'].dirty)">
+          Reference est Obligatoire !
+        </div>
+      </div>
+
+      <div class="col-sm-3 input-group-rounded">
+        <input placeholder="Date de création" class="form-control" type="date" formControlName="dateCreation"/>
+      </div>
+      <div class="col-sm-3 input-group-rounded">
+        <input placeholder="Lieu de création" class="form-control" type="text"  formControlName="lieuCreation"  />
+      </div>
+      <div class="col-sm-3 ">
+      <ng-select   placeholder="Select Client" class="form-control"
+                   [options]="myOptions">
+      </ng-select>
+      </div>
+    </div>
+
+    <hr/>
+
+    <nb-card-body>
+      <ng2-smart-table [settings]="settings" [source]="data" (deleteConfirm)="onDeleteConfirm($event)" (editConfirm)="onSaveConfirm($event)" (createConfirm)="onCreateConfirm($event)"></ng2-smart-table>
+    </nb-card-body>
+  </nb-card-body>
+
+
+</nb-card>
+  </form>
+</div>
+</div>

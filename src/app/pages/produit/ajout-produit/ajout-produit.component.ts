@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
-import {ProduitService} from '../produit.service';
+import {ProduitService} from '../../../service/produit.service';
 import {Produit} from '../../../shared/produit';
 
 @Component({
@@ -64,18 +64,22 @@ export class AjoutProduitComponent implements OnInit {
       });
   }
 
+
   onDeleteConfirm(event) {
     console.log('Delete Event In Console');
     if (window.confirm('Are you sure you want to delete?')) {
-    console.log(event.data);
-      event.confirm.resolve();
-    } else {
-      event.confirm.reject();
-    }
-  }
+      this.service.deleteProduit(event.data['id']).subscribe(
+        data => {
+          this.ngOnInit();
+        }, err => {
+          this.ngOnInit();
+          console.log('error');
+          event.confirm.reject();
+        });
+  }}
 
   onCreateConfirm(event) {
-    this.produit = new Produit(event['newData']['ref'], event['newData']['quantite'], event['newData']['prixUnitaire']);
+    this.produit = new Produit(event['newData']['id'],event['newData']['ref'], event['newData']['quantite'], event['newData']['prixUnitaire']);
 
     this.service.addProduit(this.produit).subscribe(
       data => {
@@ -90,9 +94,10 @@ export class AjoutProduitComponent implements OnInit {
 
   }
 
+
   // @ts-ignore
   onSaveConfirm(event) {
-    this.produit = new Produit(event['newData']['ref'], event['newData']['quantite'], event['newData']['prixUnitaire']);
+    this.produit = new Produit(event['newData']['id'],event['newData']['ref'], event['newData']['quantite'], event['newData']['prixUnitaire']);
 
     this.service.updateProduit(this.produit).subscribe(
       data => {
