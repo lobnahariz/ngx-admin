@@ -18,6 +18,7 @@ import {EnteteDocumentService} from './service/enteteDocument.service';
 import { HttpModule } from '@angular/http';
 import {AppService} from './app.service';
 import { LoginComponent } from './login/login.component';
+import {AuthenticationService} from "./service/authentication-service";
 
 @NgModule({
   declarations: [AppComponent, LoginComponent],
@@ -29,7 +30,7 @@ import { LoginComponent } from './login/login.component';
     HttpModule,
     NgbModule.forRoot(),
     ThemeModule.forRoot(),
-    CoreModule.forRoot(),
+    CoreModule.forRoot()
   ],
   bootstrap: [AppComponent],
   providers: [
@@ -37,6 +38,7 @@ import { LoginComponent } from './login/login.component';
     ProduitService,
     EnteteDocumentService,
     AppService,
+    AuthenticationService,
   ],
 })
 export class AppModule {

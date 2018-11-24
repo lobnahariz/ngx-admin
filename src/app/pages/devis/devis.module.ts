@@ -6,6 +6,7 @@ import {SelectModule} from 'ng-select';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
+import { ModifierDevisComponent } from './modifier-devis/modifier-devis.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -18,6 +19,7 @@ import { HttpModule } from '@angular/http';
   ],
   declarations: [
     ...routedComponents,
+    ModifierDevisComponent,
   ],
 })
 export class DevisModule { }

@@ -1,32 +1,29 @@
-import {Component, OnInit} from '@angular/core';
-import {IOption} from 'ng-select';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import {DevisDocument} from '../../../model/devisDocument';
-import {LineDocument} from '../../../model/lineDocument';
-import {AuthenticationService} from '../../../service/authentication-service';
-
+import { Component, OnInit } from '@angular/core';
+import {AuthenticationService} from "../../../service/authentication-service";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {LineDocument} from "../../../model/lineDocument";
+import {BonDeLivraisonDocument} from "../../../model/BonDeLivraisonDocument";
 
 @Component({
-  selector: 'ngx-ajouter-devis',
-  styleUrls: ['./ajouter-devis.component.scss'],
-  templateUrl: './ajouter-devis.component.html',
+  selector: 'ngx-ajouter-bon-livraison',
+  templateUrl: './ajouter-bon-livraison.component.html',
+  styleUrls: ['./ajouter-bon-livraison.component.scss']
 })
-export class AjouterDevisComponent implements OnInit {
-
-  devisForm: FormGroup;
-  devis: DevisDocument;
+export class AjouterBonLivraisonComponent implements OnInit {
+  bondeLivraisonForm: FormGroup;
+  //bonDeLivraison: BonDeLivraisonDocument;
   linesDocument: LineDocument[] = [];
-  lineDocument: LineDocument;
-  idEntete: string;
-  event: any;
-  constructor(private devisService: AuthenticationService, private df: FormBuilder) {
-    this.devisForm = this.df.group({
+  constructor(private bonLivraisonService: AuthenticationService, private df: FormBuilder) {
+    this.bondeLivraisonForm = this.df.group({
       ref: ['', Validators.required],
       dateCreation: '',
       lieuCreation: '',
-      delaiLivraisonSouhaite: '',
+      accuse_reception: '',
+      receptionDate: '',
+      receptionPersonne: '',
     });
   }
+
 
   myOptions: Array<any> = [
   ];
@@ -35,7 +32,7 @@ export class AjouterDevisComponent implements OnInit {
   data = [];
 
   file:  Array<any> = [
-];
+  ];
   xfile:  Array<any> = [
   ];
   settings = {
@@ -93,7 +90,7 @@ export class AjouterDevisComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    this.devisService.getClients().subscribe(
+    this.bonLivraisonService.getClients().subscribe(
       data => {
         data.forEach(x => {
           let client = {
@@ -106,13 +103,13 @@ export class AjouterDevisComponent implements OnInit {
       }, err => {
       });
 
-   this.devisService.getProduits().subscribe(
+    this.bonLivraisonService.getProduits().subscribe(
       prod => {
         prod.forEach(y => {
 
-         var variable ={
-           code: y.ref,
-         }
+          var variable ={
+            code: y.ref,
+          }
           this.xfile.push(variable);
         })
         this.file = this.xfile;
@@ -124,44 +121,46 @@ export class AjouterDevisComponent implements OnInit {
 
   addDevis(): void {
 
-    const formValue = this.devisForm.value;
-    let newDevis: DevisDocument = {
-        id: null,
-        ref: formValue['ref'],
-        dateCreation: formValue['dateCreation'],
-        lieuCreation: formValue['lieuCreation'],
-        linesDocument: 0,
-        personId: 0,
-        delaiLivraisonSouhaite: formValue['delaiLivraisonSouhaite'],
+    const formValue = this.bondeLivraisonForm.value;
+    let newBonDeLivraison: BonDeLivraisonDocument = {
+      id: null,
+      ref: formValue['ref'],
+      dateCreation: formValue['dateCreation'],
+      lieuCreation: formValue['lieuCreation'],
+      linesDocument: 0,
+      personId: 0,
+      accuse_reception: true,
+      receptionDate: formValue['receptionDate'],
+      receptionPersonne: formValue['receptionPersonne']
     };
-    this.devisService.addEnteteDocument(newDevis)
+    this.bonLivraisonService.addBonDeLivraisonEntete(newBonDeLivraison)
       .subscribe(res => {
-        newDevis.id = res.id;
-         // this.idEntete = res.id;
-          this.createLineDocument(newDevis, newDevis.id);
+          newBonDeLivraison.id = res.id;
+          // this.idEntete = res.id;
+          this.createLineDocument(newBonDeLivraison, newBonDeLivraison.id);
         },
         err => {alert("An error occurred while saving the devis"); }
-    );
+      );
   }
 
- createLineDocument(entete: DevisDocument, idEntete: number) {
+  createLineDocument(entete: BonDeLivraisonDocument, idEntete: number) {
     this.linesDocument.forEach(line => {
       line.enteteId = entete.id;
       console.log(line.enteteId);
-      this.devisService.addLineDocument(line, idEntete)
+      this.bonLivraisonService.addLineDocument(line, idEntete)
         .subscribe(resultat => {
             this.linesDocument = [];
-          //  this.event.confirm.resolve(this.event.newData);
+            //  this.event.confirm.resolve(this.event.newData);
           },error => {
             console.log("err");
-         // this.event.confirm.reject();
+            // this.event.confirm.reject();
           }
         );
     });
   }
 
   onDeleteConfirm(event) {
-    }
+  }
 
   onCreateConfirm(event) {
     let newLine: LineDocument = {
@@ -180,19 +179,19 @@ export class AjouterDevisComponent implements OnInit {
 
   // @ts-ignore
   onSaveConfirm(event) {
-  /* let newLine: LineDocument = {
-      id: null,
-      code: event['data']['code'],
-      qte: event['data']['qte'],
-      puHT: event['data']['puHT'],
-      tva: event['data']['tva'],
-      totalHT: event['data']['totalHT'],
-      totalTTC: event['data']['totalTTC'],
-      enteteId: null
-    };
+    /* let newLine: LineDocument = {
+        id: null,
+        code: event['data']['code'],
+        qte: event['data']['qte'],
+        puHT: event['data']['puHT'],
+        tva: event['data']['tva'],
+        totalHT: event['data']['totalHT'],
+        totalTTC: event['data']['totalTTC'],
+        enteteId: null
+      };
 
-  const r = this.linesDocument.findIndex(x => x === event['data']);
-    console.log(r);
-    event.confirm.resolve();*/
+    const r = this.linesDocument.findIndex(x => x === event['data']);
+      console.log(r);
+      event.confirm.resolve();*/
   }
 }

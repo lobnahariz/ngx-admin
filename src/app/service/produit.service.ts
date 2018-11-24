@@ -1,5 +1,5 @@
 import {Injectable } from '@angular/core';
-import {Produit} from '../shared/produit';
+import {Produit} from '../model/produit';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 @Injectable()

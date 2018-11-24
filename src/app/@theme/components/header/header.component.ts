@@ -4,6 +4,8 @@ import { NbMenuService, NbSidebarService } from '@nebular/theme';
 import { UserService } from '../../../@core/data/users.service';
 import { AnalyticsService } from '../../../@core/utils/analytics.service';
 import { LayoutService } from '../../../@core/data/layout.service';
+import {AuthenticationService} from "../../../service/authentication-service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'ngx-header',
@@ -22,13 +24,29 @@ export class HeaderComponent implements OnInit {
               private menuService: NbMenuService,
               private userService: UserService,
               private analyticsService: AnalyticsService,
-              private layoutService: LayoutService) {
+              private layoutService: LayoutService,
+              private authService: AuthenticationService,
+              private router: Router) {
   }
 
   ngOnInit() {
     this.userService.getUsers()
       .subscribe((users: any) => this.user = users.nick);
+    this.menuService.onItemClick()
+      .subscribe((event) => {
+        this.onContecxtItemSelection(event.item.title);
+      });
+
+
   }
+
+  onContecxtItemSelection(title: string) {
+if (title === 'Log out') {
+   this.authService.logout();
+   this.router.navigateByUrl("/auth/login");
+}
+  }
+
 
   toggleSidebar(): boolean {
     this.sidebarService.toggle(true, 'menu-sidebar');

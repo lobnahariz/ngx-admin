@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { LocalDataSource } from 'ng2-smart-table';
-import {ProduitService} from '../../../service/produit.service';
-import {Produit} from '../../../shared/produit';
+import {Produit} from '../../../model/produit';
+import {AuthenticationService} from '../../../service/authentication-service';
+import { Router} from '@angular/router';
 
 @Component({
   selector: 'ngx-ajout-produit',
@@ -47,20 +47,21 @@ export class AjoutProduitComponent implements OnInit {
     },
   };
 
- source: LocalDataSource = new LocalDataSource();
+ //source: LocalDataSource = new LocalDataSource();
  produit: Produit;
-
-  constructor(private service: ProduitService) {
+source:any;
+  constructor(private authorizationService: AuthenticationService,private router:Router) {
    // const data = this.service.getData();
    // this.source.load(data);
   }
 
   ngOnInit(): void {
-    this.service.getProduits().subscribe(
+    this.authorizationService.getProduits().subscribe(
       data => {
         this.source = data;
       }, err => {
-        console.log('error');
+        this.authorizationService.logout();
+        this.router.navigateByUrl("/auth/login");
       });
   }
 
@@ -68,7 +69,7 @@ export class AjoutProduitComponent implements OnInit {
   onDeleteConfirm(event) {
     console.log('Delete Event In Console');
     if (window.confirm('Are you sure you want to delete?')) {
-      this.service.deleteProduit(event.data['id']).subscribe(
+      this.authorizationService.deleteProduit(event.data['id']).subscribe(
         data => {
           this.ngOnInit();
         }, err => {
@@ -81,7 +82,7 @@ export class AjoutProduitComponent implements OnInit {
   onCreateConfirm(event) {
     this.produit = new Produit(event['newData']['id'],event['newData']['ref'], event['newData']['quantite'], event['newData']['prixUnitaire']);
 
-    this.service.addProduit(this.produit).subscribe(
+    this.authorizationService.addProduit(this.produit).subscribe(
       data => {
         console.log(data);
         event.confirm.resolve();
@@ -99,7 +100,7 @@ export class AjoutProduitComponent implements OnInit {
   onSaveConfirm(event) {
     this.produit = new Produit(event['newData']['id'],event['newData']['ref'], event['newData']['quantite'], event['newData']['prixUnitaire']);
 
-    this.service.updateProduit(this.produit).subscribe(
+    this.authorizationService.updateProduit(this.produit).subscribe(
       data => {
         console.log(data);
         event.confirm.resolve();

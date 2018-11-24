@@ -56,22 +56,49 @@ export const MENU_ITEMS: NbMenuItem[] = [
     ],
   },
   {
+    title: 'Client',
+    icon: 'nb-client',
+    children: [
+      {
+        title: 'Gestion Client',
+        link: '/pages/client/gestionClient',
+      },
+    ],
+  },
+  {
+    title: 'Fournisseur',
+    icon: 'nb-client',
+    children: [
+      {
+        title: 'Gestion Fournisseur',
+        link: '/pages/fournisseur/gestionFournisseur',
+      },
+    ],
+  },
+  {
     title: 'Produit',
-    icon: 'nb-tables',
+    icon: 'nb-client',
     children: [
       {
         title: 'Gestion Produit',
         link: '/pages/produit/gestionProduit',
       },
     ],
-  },
-  {
-    title: 'Devis',
-    icon: 'nb-tables',
+  }, {
+    title: 'Gestion Achat',
+    icon: 'nb-client',
     children: [
       {
         title: 'Nouveau Devis',
         link: '/pages/devis/nouveauDevis',
+      },
+      {
+        title: 'Nouveau Bon De Livraison',
+        link: '/pages/bon-livraison/nouveauBonDeLivraison',
+      },
+      {
+        title: 'Modifier Devis',
+        link: '/pages/devis/modifierDevis',
       },
     ],
   },
@@ -153,16 +180,6 @@ export const MENU_ITEMS: NbMenuItem[] = [
       {
         title: 'CKEditor',
         link: '/pages/editors/ckeditor',
-      },
-    ],
-  },
-  {
-    title: 'Tables',
-    icon: 'nb-tables',
-    children: [
-      {
-        title: 'Smart Table',
-        link: '/pages/tables/smart-table',
       },
     ],
   },

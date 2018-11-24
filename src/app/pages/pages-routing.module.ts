@@ -31,18 +31,25 @@ const routes: Routes = [
   }, {
     path: 'editors',
     loadChildren: './editors/editors.module#EditorsModule',
-  }, {
+  },{
+    path: 'fournisseur',
+    loadChildren: './fournisseur/fournisseur.module#FournisseurModule',
+  },
+    {
+      path: 'client',
+      loadChildren: './client/client.module#ClientModule',
+    }, {
     path: 'produit',
     loadChildren: './produit/produit.module#ProduitModule',
   }, {
     path: 'devis',
     loadChildren: './devis/devis.module#DevisModule',
-  },  {
+  }, {
+      path: 'bon-livraison',
+      loadChildren: './bon-livraison/bon-livraison.module#BonLivraisonModule',
+    }, {
     path: 'forms',
     loadChildren: './forms/forms.module#FormsModule',
-  }, {
-    path: 'tables',
-    loadChildren: './tables/tables.module#TablesModule',
   }, {
     path: 'miscellaneous',
     loadChildren: './miscellaneous/miscellaneous.module#MiscellaneousModule',
