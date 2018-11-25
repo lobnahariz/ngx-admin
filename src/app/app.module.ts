@@ -7,7 +7,7 @@ import { APP_BASE_HREF } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { CoreModule } from './@core/core.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -19,7 +19,7 @@ import { HttpModule } from '@angular/http';
 import {AppService} from './app.service';
 import { LoginComponent } from './login/login.component';
 import {AuthenticationService} from "./service/authentication-service";
-
+import {Alerter} from "./service/alerter.service";
 @NgModule({
   declarations: [AppComponent, LoginComponent],
   imports: [
@@ -39,6 +39,7 @@ import {AuthenticationService} from "./service/authentication-service";
     EnteteDocumentService,
     AppService,
     AuthenticationService,
+    Alerter,
   ],
 })
 export class AppModule {

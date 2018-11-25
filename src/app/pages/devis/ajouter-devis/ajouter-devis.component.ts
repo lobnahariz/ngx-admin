@@ -4,6 +4,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import {DevisDocument} from '../../../model/devisDocument';
 import {LineDocument} from '../../../model/lineDocument';
 import {AuthenticationService} from '../../../service/authentication-service';
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -19,7 +20,7 @@ export class AjouterDevisComponent implements OnInit {
   lineDocument: LineDocument;
   idEntete: string;
   event: any;
-  constructor(private devisService: AuthenticationService, private df: FormBuilder) {
+  constructor(private devisService: AuthenticationService, private df: FormBuilder, private router: Router) {
     this.devisForm = this.df.group({
       ref: ['', Validators.required],
       dateCreation: '',
@@ -104,6 +105,8 @@ export class AjouterDevisComponent implements OnInit {
         })
         this.myOptions = this.test;
       }, err => {
+        this.devisService.logout();
+        this.router.navigateByUrl("/auth/login");
       });
 
    this.devisService.getProduits().subscribe(
@@ -165,7 +168,7 @@ export class AjouterDevisComponent implements OnInit {
 
   onCreateConfirm(event) {
     let newLine: LineDocument = {
-      id: null,
+      id_line: null,
       code: event['newData']['code'],
       qte: event['newData']['qte'],
       puHT: event['newData']['puHT'],

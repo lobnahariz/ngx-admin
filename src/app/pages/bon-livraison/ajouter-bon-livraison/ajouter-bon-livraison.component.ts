@@ -164,7 +164,7 @@ export class AjouterBonLivraisonComponent implements OnInit {
 
   onCreateConfirm(event) {
     let newLine: LineDocument = {
-      id: null,
+      id_line: null,
       code: event['newData']['code'],
       qte: event['newData']['qte'],
       puHT: event['newData']['puHT'],

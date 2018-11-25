@@ -1,0 +1,23 @@
+<div class="modal-header">
+  <span>{{ modalHeader }}</span>
+  <button class="close" aria-label="Close" (click)="closeModal()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+
+</div>
+<div class="modal-body">
+
+  <nb-card-body>
+    <ng2-smart-table  [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)" (editConfirm)="onSaveConfirm($event)" (createConfirm)="onCreateConfirm($event)"
+    >
+    </ng2-smart-table>
+  </nb-card-body>
+
+
+</div>
+<div class="modal-footer">
+  <button class="btn btn-md btn-primary" (click)="genererBonLivraison()">gen</button>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-md btn-primary" (click)="closeModal()">Save changes</button>
+</div>

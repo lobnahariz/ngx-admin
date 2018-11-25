@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import {DevisComponent} from './devis.component';
 import {AjouterDevisComponent} from './ajouter-devis/ajouter-devis.component';
 import {ModifierDevisComponent} from "./modifier-devis/modifier-devis.component";
+import {LigneModalComponent} from "./ligne-modal/ligne-modal.component";
 
 const routes: Routes = [{
     path: '',

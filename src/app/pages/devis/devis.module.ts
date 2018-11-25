@@ -6,7 +6,8 @@ import {SelectModule} from 'ng-select';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
-import { ModifierDevisComponent } from './modifier-devis/modifier-devis.component';
+import {LigneModalComponent} from "./ligne-modal/ligne-modal.component";
+
 @NgModule({
   imports: [
     CommonModule,
@@ -16,10 +17,14 @@ import { ModifierDevisComponent } from './modifier-devis/modifier-devis.componen
     Ng2SmartTableModule,
     HttpClientModule,
     HttpModule,
+
   ],
   declarations: [
     ...routedComponents,
-    ModifierDevisComponent,
+    LigneModalComponent,
+  ],
+  entryComponents: [
+    LigneModalComponent,
   ],
 })
 export class DevisModule { }

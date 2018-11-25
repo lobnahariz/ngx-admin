@@ -12,7 +12,7 @@ export class IconsComponent {
     nebular: ['nb-alert', 'nb-angle-double-left', 'nb-angle-double-right',
       'nb-arrow-down', 'nb-arrow-dropdown', 'nb-arrow-dropleft',
       'nb-arrow-dropright', 'nb-arrow-dropup', 'nb-arrow-left', 'nb-arrow-retweet', 'nb-arrow-right',
-      'nb-arrow-thin-down', 'nb-arrow-thin-left', 'nb-arrow-thin-right', 'nb-arrow-thin-up',
+      'nb-arrow-thin-down', 'nb-arrow-thin-right', 'nb-arrow-thin-up',
       'nb-arrow-up', 'nb-audio', 'nb-bar-chart', 'nb-checkmark', 'nb-chevron-down',
       'nb-chevron-down-outline', 'nb-chevron-left', 'nb-chevron-left-outline', 'nb-chevron-right',
       'nb-chevron-right-outline', 'nb-chevron-up', 'nb-chevron-up-outline', 'nb-close',

@@ -22,11 +22,16 @@ export class AuthenticationService {
 
 }
 login(user) {
+  if (user && user.token) {
+    localStorage.setItem('currentUser', JSON.stringify(user));
+  }
   return this.http.post(this.host+"/login" , user ,{ observe : 'response' });
 }
   logout() {
     this.jwtToken = null;
     localStorage.removeItem('token');
+    console.log(this.jwtToken+"%%%%%%%%%%%%%%%%%ù");
+
   }
 
 
@@ -34,6 +39,7 @@ login(user) {
 
 loadToken() {
   this.jwtToken = localStorage.getItem('token');
+  console.log(this.jwtToken+"************************");
 }
 saveToken(jwt: string) {
   this.jwtToken = jwt;
@@ -71,9 +77,10 @@ saveToken(jwt: string) {
     return this.http.post<DevisDocument>(this.host + '/api/devis', devis,{ headers: new HttpHeaders({'Authorization': this.jwtToken}) });
   }
 
-  public addLineDocument(line: LineDocument, idEntete: number): Observable<LineDocument> {
+
+  public getDevisDocumentById(id: number): Observable<DevisDocument> {
     if (this.jwtToken == null) this.loadToken();
-    return this.http.post<LineDocument>(this.host + '/api/line/'+idEntete, line,{ headers: new HttpHeaders({'Authorization': this.jwtToken}) });
+    return this.http.get<DevisDocument>(this.host + '/api/devis/getById/'+id,{ headers: new HttpHeaders({'Authorization': this.jwtToken}) });
   }
 
   public getDevisDocument(): Observable<DevisDocument[]> {
@@ -85,6 +92,9 @@ saveToken(jwt: string) {
     if (this.jwtToken == null) this.loadToken();
     return this.http.delete(this.host + '/api/devis/'+ id,{ headers: new HttpHeaders({'Authorization': this.jwtToken}) });
   }
+
+
+
 
 ///////////////////////////////////Client
 
@@ -134,6 +144,25 @@ saveToken(jwt: string) {
     return this.http.post<BonDeLivraisonDocument>(this.host + '/api/bonDeLivraison', bonDeLivraison,{ headers: new HttpHeaders({'Authorization': this.jwtToken}) });
   }
 
+
+
+
+  ////////////////////////////////////////////Line
+  public addLineDocument(line: LineDocument, idEntete: number): Observable<LineDocument> {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.post<LineDocument>(this.host + '/api/line/'+idEntete, line,{ headers: new HttpHeaders({'Authorization': this.jwtToken}) });
+  }
+
+  public getLinesDocumentByDocumentId(id: number):  Observable<any>  {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get(this.host + '/api/line/byEntete/'+id,{ headers: new HttpHeaders({'Authorization': this.jwtToken}) });
+  }
+
+
+  public  deleteLine(id: number): Observable<any> {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.delete(this.host+'/api/line/' + id,{headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
 
   /*
   getTasks(){

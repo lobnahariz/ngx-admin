@@ -1,6 +1,6 @@
-export interface LineDocument {
+export class LineDocument {
 
-  id: number;
+  id_line: number;
   code: string;
   qte: number;
   puHT: number;
