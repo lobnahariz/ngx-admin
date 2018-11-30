@@ -1,23 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthenticationService} from "../../../service/authentication-service";
 import {Router} from "@angular/router";
-import {NgbActiveModal, NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {BonDeLivraisonDocument} from "../../../model/BonDeLivraisonDocument";
 import {LigneModalComponent} from "../ligne-modal/ligne-modal.component";
-import {ModalComponent} from "../../ui-features/modals/modal/modal.component";
-import {DevisDocument} from "../../../model/devisDocument";
 
 @Component({
-  selector: 'ngx-modifier-devis',
-  templateUrl: './modifier-devis.component.html',
+  selector: 'ngx-modifier-bon-livraison',
+  templateUrl: './modifier-bon-livraison.component.html',
   styles: [`
     nb-card {
       transform: translate3d(0, 0, 0);
     }
   `],
 })
-export class ModifierDevisComponent implements OnInit {
+export class ModifierBonLivraisonComponent implements OnInit {
 
-  constructor(private authorizationService: AuthenticationService,private router:Router,private modalService: NgbModal) { }
+  constructor(private authorizationService: AuthenticationService,private router:Router,private modalService: NgbModal) {}
   settings = {
     actions: {
       add: false,
@@ -40,47 +39,44 @@ export class ModifierDevisComponent implements OnInit {
         type: 'boolean',
         editable: false,
 
-
       },
       ref: {
         title: 'Ref',
         type: 'string',
-
-
       },
       dateCreation: {
         title: 'Date Creation',
         type: 'string',
-
       },
       lieuCreation: {
         title: 'Lieu Creation',
         type: 'string',
-
       },
-      delaiLivraisonSouhaite: {
-        title: 'Delai Livraison Souhaite',
+      receptionDate: {
+        title: 'Date Reception',
         type: 'string',
-
+      },
+      receptionPersonne: {
+        title: 'Personne Reception',
+        type: 'string',
       },
     },
   };
   source:any;
   ngOnInit() {
-
-    this.authorizationService.getDevisDocument().subscribe(
+    this.authorizationService.getBonDeLivraison().subscribe(
       data => {
         this.source = data;
       }, err => {
         console.log("errr");
-
+        //  this.authorizationService.logout();
+        //   this.router.navigateByUrl("/auth/login");
       });
   }
 
-
   onDeleteConfirm(event) {
     if (window.confirm('Are you sure you want to delete?')) {
-      this.authorizationService.deleteDevisDocument(event.data['id']).subscribe(
+      this.authorizationService.deleteBonDeLivraison(event.data['id']).subscribe(
         data => {
           this.ngOnInit();
         }, err => {
@@ -92,36 +88,33 @@ export class ModifierDevisComponent implements OnInit {
 
   onSaveConfirm(event) {
     this.showLargeModal(event);
-console.log(event);
-console.log(event["newData"]);
-console.log(event["data"]);
-  let newDevis: DevisDocument = {
+    console.log(event['newData']+"*******");
+
+    let newBonDeLivraison: BonDeLivraisonDocument = {
       id: event['newData']['id'],
       ref: event['newData']['ref'],
       dateCreation: event['newData']['dateCreation'],
       lieuCreation: event['newData']['lieuCreation'],
       linesDocument: 0,
-      personId: event['newData']['personne']['id'],
-      delaiLivraisonSouhaite: event['newData']['delaiLivraisonSouhaite'],
+      accuse_reception: event['newData']['accuse_reception'],
+      receptionDate: event['newData']['receptionDate'],
+      receptionPersonne: event['newData']['receptionPersonne'],
       achat: event['newData']['achat'],
-    documenttotalHT: event['newData']['documenttotalHT'],
-    documenttotalTVA: event['newData']['documenttotalTVA'],
-    documenttotalReduction: event['newData']['documenttotalReduction'],
-    documenttotalTTC: event['newData']['documenttotalTTC'],
-    documenttotalTTCReduction: event['newData']['documenttotalTTCReduction'],
+      personId:  event['newData']['personne']['id'],
+      documenttotalHT: event['newData']['documenttotalHT'],
+      documenttotalTVA: event['newData']['documenttotalTVA'],
+      documenttotalReduction: event['newData']['documenttotalReduction'],
+      documenttotalTTC: event['newData']['documenttotalTTC'],
+      documenttotalTTCReduction: event['newData']['documenttotalTTCReduction'],
     };
 
-    console.log(newDevis);
-   this.authorizationService.addEnteteDocument(newDevis)
+    this.authorizationService.addBonDeLivraisonDocument(newBonDeLivraison)
       .subscribe(res => {
-          newDevis.id = res.id;
-         this.ngOnInit();
+          newBonDeLivraison.id = res.id;
+          this.ngOnInit();
         },
         err => {alert("An error occurred while saving the devis"); }
       );
-    console.log("*******************");
-
-    console.log(event);
     event.confirm.resolve();
   }
 

@@ -8,4 +8,5 @@ export class LineDocument {
   totalHT: number;
   totalTTC: number;
   enteteId: number;
+  reduction: number;
 }

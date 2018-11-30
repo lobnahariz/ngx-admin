@@ -45,6 +45,14 @@ const routes: Routes = [
     path: 'devis',
     loadChildren: './devis/devis.module#DevisModule',
   }, {
+      path: 'facture',
+      loadChildren: './facture/facture.module#FactureModule',
+    },
+    {
+      path: 'avoir',
+      loadChildren: './avoir/avoir.module#AvoirModule',
+    },
+    {
       path: 'bon-livraison',
       loadChildren: './bon-livraison/bon-livraison.module#BonLivraisonModule',
     }, {

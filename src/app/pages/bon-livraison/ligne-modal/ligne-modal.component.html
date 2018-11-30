@@ -36,6 +36,16 @@
     </tbody>
 
   </table>
+  <div class="content-row">
+  <div class="alert alert-danger" style="margin-top: 3px" *ngIf="produitCodeExiste === 'Produit n existe pas'">
+    {{produitCodeExiste}}
+  </div>
+</div>
+  <div class="content-row">
+    <div class="alert alert-danger" style="margin-top: 3px" *ngIf="quantiteStock">
+      {{quantiteStock}}
+    </div>
+  </div>
   <nb-card-body>
     <ng2-smart-table  [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)" (editConfirm)="onSaveConfirm($event)" (createConfirm)="onCreateConfirm($event)"
     >
@@ -43,9 +53,7 @@
   </nb-card-body>
 
 
-
 </div>
-
 <div class="modal-footer">
   <button class="btn btn-md btn-primary" (click)="closeModal()">Terminer</button>
 </div>

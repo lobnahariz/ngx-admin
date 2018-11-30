@@ -8,6 +8,9 @@ import {DevisDocument} from '../model/devisDocument';
 import {Client} from "../model/client";
 import {BonDeLivraisonDocument} from "../model/BonDeLivraisonDocument";
 import {Fournisseur} from "../model/fournisseur";
+import {Register} from "../model/register";
+import {BonLivraisonComponent} from "../pages/bon-livraison/bon-livraison.component";
+import {FactureDocument} from "../model/factureDocument";
 
 @Injectable({
   providedIn: 'root'
@@ -22,18 +25,19 @@ export class AuthenticationService {
 
 }
 login(user) {
-  if (user && user.token) {
-    localStorage.setItem('currentUser', JSON.stringify(user));
-  }
+  localStorage.setItem('currentUser', user.username);
+
   return this.http.post(this.host+"/login" , user ,{ observe : 'response' });
 }
   logout() {
     this.jwtToken = null;
     localStorage.removeItem('token');
-    console.log(this.jwtToken+"%%%%%%%%%%%%%%%%%ù");
 
   }
 
+  public register(register) {
+    return this.http.post(this.host+'/register', register);
+  }
 
 
 
@@ -70,14 +74,15 @@ saveToken(jwt: string) {
     return this.http.delete(this.host+'/api/produit/' + id,{headers: new HttpHeaders({'Authorization': this.jwtToken})});
   }
 
-
+  public getProduitByRef(ref: string): Observable<Produit>  {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get<Produit>(this.host+'/api/produit/getByRef/'+ref ,{headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
   ////////////////////////////////Devis
   public addEnteteDocument(devis: DevisDocument): Observable<DevisDocument> {
     if (this.jwtToken == null) this.loadToken();
     return this.http.post<DevisDocument>(this.host + '/api/devis', devis,{ headers: new HttpHeaders({'Authorization': this.jwtToken}) });
   }
-
-
   public getDevisDocumentById(id: number): Observable<DevisDocument> {
     if (this.jwtToken == null) this.loadToken();
     return this.http.get<DevisDocument>(this.host + '/api/devis/getById/'+id,{ headers: new HttpHeaders({'Authorization': this.jwtToken}) });
@@ -97,7 +102,6 @@ saveToken(jwt: string) {
 
 
 ///////////////////////////////////Client
-
 
 
   public getClients(): Observable<Client[]> {
@@ -144,8 +148,46 @@ saveToken(jwt: string) {
     return this.http.post<BonDeLivraisonDocument>(this.host + '/api/bonDeLivraison', bonDeLivraison,{ headers: new HttpHeaders({'Authorization': this.jwtToken}) });
   }
 
+  public getBonDeLivraison(): Observable<BonDeLivraisonDocument[]> {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get<BonDeLivraisonDocument[]>(this.host + '/api/bonDeLivraison',{ headers: new HttpHeaders({'Authorization': this.jwtToken}) });
+  }
 
+  public deleteBonDeLivraison(id: number) {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.delete(this.host + '/api/bonDeLivraison/'+ id,{ headers: new HttpHeaders({'Authorization': this.jwtToken}) });
+  }
 
+  public addBonDeLivraisonDocument(bonDeLivraison: BonDeLivraisonDocument): Observable<BonDeLivraisonDocument> {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.post<BonDeLivraisonDocument>(this.host + '/api/bonDeLivraison', bonDeLivraison,{ headers: new HttpHeaders({'Authorization': this.jwtToken}) });
+  }
+  public getBonLivraisonDocumentById(id: number): Observable<BonDeLivraisonDocument> {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get<BonDeLivraisonDocument>(this.host + '/api/bonDeLivraison/getById/'+id,{ headers: new HttpHeaders({'Authorization': this.jwtToken}) });
+  }
+  ///////////////////////////////////:Facture
+
+  ////////////////////////////////BonDe Livraison
+  public addFactureEntete(facture: FactureDocument): Observable<FactureDocument> {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.post<FactureDocument>(this.host + '/api/facture', facture,{ headers: new HttpHeaders({'Authorization': this.jwtToken}) });
+  }
+
+  public getFacture(): Observable<FactureDocument[]> {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get<FactureDocument[]>(this.host + '/api/facture',{ headers: new HttpHeaders({'Authorization': this.jwtToken}) });
+  }
+
+  public deleteFacture(id: number) {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.delete(this.host + '/api/facture/'+ id,{ headers: new HttpHeaders({'Authorization': this.jwtToken}) });
+  }
+
+  public addFactureDocument(facture: FactureDocument): Observable<FactureDocument> {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.post<FactureDocument>(this.host + '/api/facture', facture,{ headers: new HttpHeaders({'Authorization': this.jwtToken}) });
+  }
 
   ////////////////////////////////////////////Line
   public addLineDocument(line: LineDocument, idEntete: number): Observable<LineDocument> {

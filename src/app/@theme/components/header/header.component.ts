@@ -19,7 +19,7 @@ export class HeaderComponent implements OnInit {
   user: any;
 
   userMenu = [{ title: 'Profile' }, { title: 'Log out' }];
-
+name: any;
   constructor(private sidebarService: NbSidebarService,
               private menuService: NbMenuService,
               private userService: UserService,
@@ -28,10 +28,12 @@ export class HeaderComponent implements OnInit {
               private authService: AuthenticationService,
               private router: Router) {
   }
-
   ngOnInit() {
-    this.userService.getUsers()
-      .subscribe((users: any) => this.user = users.nick);
+    this.name = localStorage.getItem('currentUser');
+  const users = {
+      nick: { name: this.name, picture: 'assets/images/images.jpg' },
+    };
+ this.user=users.nick;
     this.menuService.onItemClick()
       .subscribe((event) => {
         this.onContecxtItemSelection(event.item.title);

@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "@agm/core": "1.0.0-beta.2",
-    "@angular/animations": "6.0.0",
+    "@angular/animations": "^6.0.0",
     "@angular/cdk": "^6.4.7",
     "@angular/common": "6.0.0",
     "@angular/compiler": "6.0.0",
@@ -54,8 +54,8 @@
     "@swimlane/ngx-charts": "7.0.1",
     "angular-tree-component": "7.2.0",
     "angular2-chartjs": "0.4.1",
-    "angular2-toaster": "6.0.0",
     "angular2-jwt": "^0.2.3",
+    "angular2-toaster": "6.0.0",
     "bootstrap": "4.0.0",
     "chart.js": "2.7.1",
     "ckeditor": "4.7.3",

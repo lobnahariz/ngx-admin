@@ -1,0 +1,154 @@
+<div class="row">
+  <div class="col-lg-12">
+    <form [formGroup]="devisForm">
+      <nb-card>
+        <nb-card-header>
+
+          <div class="row">
+            <div class="content-row">
+              <button (click)="addDevis()" [disabled]="devisForm.pristine || devisForm.invalid" class="btn btn-hero-success main-btn">Nouvelle Facture </button>
+            </div>
+            <div class="content-row">
+              <label class="container">
+                <nb-checkbox [(ngModel)]="theCheckbox" [ngModelOptions]="{standalone: true}" data-md-icheck (change)="toggleVisibility($event)">Achat</nb-checkbox>
+
+              </label>
+            </div>
+            <div class="content-row">
+              <div class="alert alert-danger" style="margin-top: 3px" *ngIf="requieredLine">
+                {{requieredLine}}
+              </div>
+            </div>
+            <div class="content-row">
+              <div class="alert alert-danger" style="margin-top: 3px" *ngIf="produitCodeExiste === 'Produit n existe pas'">
+                {{produitCodeExiste}}
+              </div>
+            </div>
+
+          </div>
+
+
+        </nb-card-header>
+        <nb-card-body class="col-xxl">
+
+          <div class="row full-name-inputs">
+            <div class="col-sm-2 input-group-rounded">
+              <input type="text" placeholder="Reference" class="form-control"  formControlName="ref"/>
+              <div class="alert alert-danger" style="margin-top: 3px" *ngIf="devisForm.controls['ref'].invalid && (devisForm.controls['ref'].touched || devisForm.controls['ref'].dirty)">
+                Reference est Obligatoire !
+              </div>
+
+            </div>
+
+            <div class="col-sm-3 input-group-rounded">
+              <input placeholder="Date de création" class="form-control" type="date" formControlName="dateCreation" required="true"/>
+            </div>
+            <div class="col-sm-2 input-group-rounded">
+              <input placeholder="Lieu de création" class="form-control" type="text"  formControlName="lieuCreation"  required="true"/>
+            </div>
+
+            <div class="col-sm-3 ">
+              <ng-select   placeholder="{{selectName}}" class="form-control" required="true"
+                           [options]="myOptions"
+                           [allowClear]="true"
+                           (selected)="onSelected($event)"
+              >
+              </ng-select>
+
+              <div class="alert alert-danger" style="margin-top: 3px" *ngIf="requieredClient">
+                {{requieredClient}}
+              </div>
+            </div>
+          </div>
+
+          <hr/>
+
+          <nb-card-body>
+            <ng2-smart-table [settings]="settings" [source]="data" (deleteConfirm)="onDeleteConfirm($event)" (editConfirm)="onSaveConfirm($event)" (createConfirm)="onCreateConfirm($event)"></ng2-smart-table>
+          </nb-card-body>
+        </nb-card-body>
+<div class="row">
+        <div class="col-md-6 column">
+        <nb-card>
+          <nb-card-header>Total</nb-card-header>
+          <nb-card-body>
+           <table class="table">
+             <tbody>
+             <tr>
+               <th>
+                 Total HT
+               </th>
+               <td>{{documenttotalHT| number}}</td>
+             </tr>
+             <tr>
+               <th>
+                 Total TVA
+               </th>
+               <td>{{documenttotalTVA| number}}</td>
+
+             </tr>
+             <tr>
+               <th>
+                  Reduction
+               </th>
+               <td>{{documenttotalReduction| number}}</td>
+
+             </tr>
+             <tr>
+               <th>
+                 Total TTC
+               </th>
+               <td>{{documenttotalTTC| number}}</td>
+
+             </tr>
+             <tr>
+               <th>
+                 Total TTC après réductions </th>
+
+             <td>{{documenttotalTTCReduction | number}}</td>
+             </tr>
+             </tbody>
+           </table>
+          </nb-card-body>
+        </nb-card>
+        </div>
+        <div class="col-md-6 column" >
+          <nb-card>
+            <nb-card-header>Reglement</nb-card-header>
+            <nb-card-body>
+
+
+                <div class="form-group">
+                  <select  (change)="etatSelectChangeHandler($event)" class="form-control">
+                    <option value="">Etat Reglement :</option>
+                    <option value="cree">Créé</option>
+                    <option value="paye">Payé</option>
+                    <option value="payeenpartie">Payé en partie</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <input placeholder="date limite reglement" class="form-control" type="date"  formControlName="dateLimiteReglement"  required="true"/>
+                </div>
+                <div class="form-group">
+              <input placeholder="montant Payé" class="form-control" type="number"  formControlName="montantPaye"  required="true"/>
+            </div>
+              <div class="form-group">
+                <select  (change)="modeSelectChangeHandler($event)" class="form-control">
+                  <option value="">Mode Reglement :</option>
+                  <option value="virementBancaire">Virement Bacaire</option>
+                  <option value="carteBancaire">Carte Bancaire</option>
+                  <option value="especes">Espéces</option>
+                  <option value="cheque">Cheque</option>
+
+                </select>
+              </div>
+              <div class="form-group">
+                <textarea placeholder="details" class="form-control" type="text"  formControlName="details"  required="true"></textarea>
+              </div>
+            </nb-card-body>
+          </nb-card>
+        </div></div>
+      </nb-card>
+    </form>
+  </div>
+</div>

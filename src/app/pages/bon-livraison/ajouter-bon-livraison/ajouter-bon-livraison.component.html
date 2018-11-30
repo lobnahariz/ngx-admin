@@ -2,7 +2,41 @@
   <div class="col-lg-12">
     <form [formGroup]="bondeLivraisonForm">
       <nb-card>
-        <nb-card-header>  <button (click)="addDevis()" [disabled]="bondeLivraisonForm.pristine || bondeLivraisonForm.invalid" class="btn btn-outline-secondary">Nouveau Devis </button></nb-card-header>
+        <nb-card-header>
+          <div class="row">
+          <div class="content-row">
+            <button (click)="addDevis()" [disabled]="bondeLivraisonForm.pristine || bondeLivraisonForm.invalid" class="btn btn-hero-success main-btn">Nouveau Bon De Livraison </button>
+          </div>
+          <div class="content-row">
+            <label class="container">
+              <nb-checkbox [(ngModel)]="accuse" (change)="toggleVisibility($event)" [ngModelOptions]="{standalone: true}" data-md-icheck >Accuse Reception</nb-checkbox>
+
+            </label>
+          </div>
+            <div class="content-row">
+              <label class="container">
+                <nb-checkbox [(ngModel)]="theCheckbox" [ngModelOptions]="{standalone: true}" data-md-icheck (change)="toggleVisibilityAchat($event)">Achat</nb-checkbox>
+
+              </label>
+            </div>
+
+            <div class="content-row">
+              <div class="alert alert-danger" style="margin-top: 3px" *ngIf="produitCodeExiste === 'Produit n existe pas'">
+                {{produitCodeExiste}}
+              </div>
+            </div>
+            <div class="content-row">
+              <div class="alert alert-danger" style="margin-top: 3px" *ngIf="quantiteStock">
+                {{quantiteStock}}
+              </div>
+            </div>
+            <div class="content-row">
+              <div class="alert alert-danger" style="margin-top: 3px" *ngIf="requieredLine">
+                {{requieredLine}}
+              </div>
+            </div>
+          </div>
+        </nb-card-header>
         <nb-card-body class="col-xxl">
 
           <div class="row full-name-inputs">
@@ -14,26 +48,31 @@
             </div>
 
             <div class="col-sm-3 input-group-rounded">
-              <input placeholder="Date de création" class="form-control" type="date" formControlName="dateCreation"/>
+              <input placeholder="Date de création" class="form-control" type="date" formControlName="dateCreation" required="true"/>
             </div>
             <div class="col-sm-3 input-group-rounded">
-              <input placeholder="Lieu de création" class="form-control" type="text"  formControlName="lieuCreation"  />
+              <input placeholder="Lieu de création" class="form-control" type="text"  formControlName="lieuCreation"  required="true" />
             </div>
-            <div class="col-sm-3 input-group-rounded">
-              <input placeholder="Delai Livraison Souhaite" class="form-control" type="text"  formControlName="accuse_reception"  />
-            </div>
-            <div class="col-sm-3 input-group-rounded">
-              <input placeholder="Delai Livraison Souhaite" class="form-control" type="text"  formControlName="receptionDate"  />
-            </div>
-            <div class="col-sm-3 input-group-rounded">
-              <input placeholder="Delai Livraison Souhaite" class="form-control" type="text"  formControlName="receptionPersonne"  />
-            </div>
+
             <div class="col-sm-3 ">
-              <ng-select   placeholder="Select Client" class="form-control"
+              <ng-select    placeholder="{{selectName}}" class="form-control"
+                            (selected)="onSelected($event)"
                            [options]="myOptions">
               </ng-select>
+              <div class="alert alert-danger" style="margin-top: 3px" *ngIf="requieredClient">
+                {{requieredClient}}
+              </div>
+            </div>
+
+            <div class="col-sm-3 input-group-rounded" *ngIf="accuse" >
+
+              <input placeholder="Date De Reception" class="form-control" type="date"  formControlName="receptionDate">
+            </div>
+            <div class="col-sm-2 input-group-rounded" *ngIf="accuse" >
+              <input placeholder="Reçu par qui" class="form-control" type="text"  formControlName="receptionPersonne"  />
             </div>
           </div>
+
 
           <hr/>
 
@@ -42,7 +81,50 @@
           </nb-card-body>
         </nb-card-body>
 
+        <div class="col-md-6 column">
+          <nb-card>
+            <nb-card-header>Total</nb-card-header>
+            <nb-card-body>
+              <table class="table">
+                <tbody>
+                <tr>
+                  <th>
+                    Total HT
+                  </th>
+                  <td>{{documenttotalHT| number}}</td>
+                </tr>
+                <tr>
+                  <th>
+                    Total TVA
+                  </th>
+                  <td>{{documenttotalTVA| number}}</td>
 
+                </tr>
+                <tr>
+                  <th>
+                    Reduction
+                  </th>
+                  <td>{{documenttotalReduction| number}}</td>
+
+                </tr>
+                <tr>
+                  <th>
+                    Total TTC
+                  </th>
+                  <td>{{documenttotalTTC| number}}</td>
+
+                </tr>
+                <tr>
+                  <th>
+                    TTC aprés réductions </th>
+
+                <td>{{documenttotalTTCReduction | number}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </nb-card-body>
+          </nb-card>
+        </div>
       </nb-card>
     </form>
   </div>

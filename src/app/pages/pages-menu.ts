@@ -1,21 +1,7 @@
 import { NbMenuItem } from '@nebular/theme';
 
 export const MENU_ITEMS: NbMenuItem[] = [
-  {
-    title: 'E-commerce',
-    icon: 'nb-e-commerce',
-    link: '/pages/dashboard',
-    home: true,
-  },
-  {
-    title: 'IoT Dashboard',
-    icon: 'nb-home',
-    link: '/pages/iot-dashboard',
-  },
-  {
-    title: 'FEATURES',
-    group: true,
-  },
+
   {
     title: 'UI Features',
     icon: 'nb-keypad',
@@ -57,7 +43,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
   },
   {
     title: 'Client',
-    icon: 'nb-client',
+    icon: 'nb-person',
     children: [
       {
         title: 'Gestion Client',
@@ -67,7 +53,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
   },
   {
     title: 'Fournisseur',
-    icon: 'nb-client',
+    icon: 'nb-coffee-maker',
     children: [
       {
         title: 'Gestion Fournisseur',
@@ -77,7 +63,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
   },
   {
     title: 'Produit',
-    icon: 'nb-client',
+    icon: 'nb-layout-default',
     children: [
       {
         title: 'Gestion Produit',
@@ -85,23 +71,42 @@ export const MENU_ITEMS: NbMenuItem[] = [
       },
     ],
   }, {
-    title: 'Gestion Achat',
-    icon: 'nb-client',
+    title: 'Gestion Achat/Vente',
+    icon: 'nb-compose',
     children: [
       {
         title: 'Nouveau Devis',
         link: '/pages/devis/nouveauDevis',
       },
       {
+        title: 'Modifier Devis',
+        link: '/pages/devis/modifierDevis',
+      },
+      {
         title: 'Nouveau Bon De Livraison',
         link: '/pages/bon-livraison/nouveauBonDeLivraison',
       },
       {
-        title: 'Modifier Devis',
-        link: '/pages/devis/modifierDevis',
+        title: 'Modifier Bon De Livraison',
+        link: '/pages/bon-livraison/modifierBonDeLivraison',
+      }, {
+        title: 'Nouvelle Facture',
+        link: '/pages/facture/nouvelleFacture',
       },
     ],
   },
+
+  {
+    title: 'Avoir',
+    icon: 'nb-compose',
+    children: [
+      {
+        title: 'Nouveau Avoir',
+        link: '/pages/avoir/nouveauAvoir',
+      },
+    ],
+  },
+
   {
     title: 'Forms',
     icon: 'nb-compose',

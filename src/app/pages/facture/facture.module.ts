@@ -1,19 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { BonLivraisonRoutingModule } from './bon-livraison-routing.module';
-import {routedComponents} from './bon-livraison-routing.module';
+import { FactureRoutingModule } from './facture-routing.module';
+import { FactureComponent } from './facture.component';
+import { AjouterFactureComponent } from './ajouter-facture/ajouter-facture.component';
 import {ThemeModule} from "../../@theme/theme.module";
 import {SelectModule} from "ng-select";
 import {Ng2SmartTableModule} from "ng2-smart-table";
 import {HttpClientModule} from "@angular/common/http";
 import {HttpModule} from "@angular/http";
-import { LigneModalComponent } from './ligne-modal/ligne-modal.component';
+import {routedComponents} from "../facture/facture-routing.module";
 
 @NgModule({
   imports: [
     CommonModule,
-    BonLivraisonRoutingModule,
+    FactureRoutingModule,
     ThemeModule,
     SelectModule,
     Ng2SmartTableModule,
@@ -22,11 +23,6 @@ import { LigneModalComponent } from './ligne-modal/ligne-modal.component';
   ],
   declarations: [
     ...routedComponents,
-    LigneModalComponent,
-
-  ],
-  entryComponents: [
-    LigneModalComponent,
-  ],
+  ]
 })
-export class BonLivraisonModule { }
+export class FactureModule { }

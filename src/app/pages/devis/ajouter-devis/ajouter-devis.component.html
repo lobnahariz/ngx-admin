@@ -2,11 +2,31 @@
 <div class="col-lg-12">
   <form [formGroup]="devisForm">
 <nb-card>
-  <nb-card-header>  <button (click)="addDevis()" [disabled]="devisForm.pristine || devisForm.invalid" class="btn btn-outline-secondary">Nouveau Devis </button></nb-card-header>
-  <nb-card-body class="col-xxl">
+  <nb-card-header>
+
+    <div class="row">
+      <div class="content-row">
+        <button (click)="addDevis()" [disabled]="devisForm.pristine || devisForm.invalid" class="btn btn-hero-success main-btn">Nouveau Devis </button>
+      </div>
+      <div class="content-row">
+        <label class="container">
+          <nb-checkbox [(ngModel)]="theCheckbox" [ngModelOptions]="{standalone: true}" data-md-icheck (change)="toggleVisibility($event)">Achat</nb-checkbox>
+
+        </label>
+      </div>
+<div class="content-row">
+  <div class="alert alert-danger" style="margin-top: 3px" *ngIf="requieredLine">
+     {{requieredLine}}
+  </div>
+</div>
+    </div>
+
+
+    </nb-card-header>
+    <nb-card-body class="col-xxl">
 
     <div class="row full-name-inputs">
-      <div class="col-sm-3 input-group-rounded">
+      <div class="col-sm-2 input-group-rounded">
         <input type="text" placeholder="Reference" class="form-control"  formControlName="ref"/>
         <div class="alert alert-danger" style="margin-top: 3px" *ngIf="devisForm.controls['ref'].invalid && (devisForm.controls['ref'].touched || devisForm.controls['ref'].dirty)">
           Reference est Obligatoire !
@@ -14,18 +34,25 @@
       </div>
 
       <div class="col-sm-3 input-group-rounded">
-        <input placeholder="Date de création" class="form-control" type="date" formControlName="dateCreation"/>
+        <input placeholder="Date de création" class="form-control" type="date" formControlName="dateCreation" required="true"/>
       </div>
-      <div class="col-sm-3 input-group-rounded">
-        <input placeholder="Lieu de création" class="form-control" type="text"  formControlName="lieuCreation"  />
+      <div class="col-sm-2 input-group-rounded">
+        <input placeholder="Lieu de création" class="form-control" type="text"  formControlName="lieuCreation"  required="true"/>
       </div>
-      <div class="col-sm-3 input-group-rounded">
-        <input placeholder="Delai Livraison Souhaite" class="form-control" type="text"  formControlName="delaiLivraisonSouhaite"  />
+      <div class="col-sm-2 input-group-rounded">
+        <input placeholder="Delai Livraison" class="form-control" type="text"  formControlName="delaiLivraisonSouhaite" required="true" />
       </div>
       <div class="col-sm-3 ">
-      <ng-select   placeholder="Select Client" class="form-control"
-                   [options]="myOptions">
+      <ng-select   placeholder="{{selectName}}" class="form-control" required="true"
+                   [options]="myOptions"
+                   [allowClear]="true"
+                   (selected)="onSelected($event)"
+                   >
       </ng-select>
+
+        <div class="alert alert-danger" style="margin-top: 3px" *ngIf="requieredClient">
+          {{requieredClient}}
+        </div>
       </div>
     </div>
 
@@ -36,7 +63,50 @@
     </nb-card-body>
   </nb-card-body>
 
+  <div class="col-md-6 column " style="float: right;">
+    <nb-card>
+      <nb-card-header>Total</nb-card-header>
+      <nb-card-body>
+        <table class="table">
+          <tbody>
+          <tr>
+            <th>
+              Total HT
+            </th>
+            <td>{{documenttotalHT| number}}</td>
+          </tr>
+          <tr>
+            <th>
+              Total TVA
+            </th>
+            <td>{{documenttotalTVA| number}}</td>
 
+          </tr>
+          <tr>
+            <th>
+              Reduction
+            </th>
+            <td>{{documenttotalReduction| number}}</td>
+
+          </tr>
+          <tr>
+            <th>
+              Total TTC
+            </th>
+            <td>{{documenttotalTTC| number}}</td>
+
+          </tr>
+          <tr>
+            <th>
+              Total TTC après réductions </th>
+
+          <td>{{documenttotalTTCReduction | number}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </nb-card-body>
+    </nb-card>
+  </div>
 </nb-card>
   </form>
 </div>

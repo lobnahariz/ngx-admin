@@ -1,4 +1,4 @@
-export interface DevisDocument {
+export interface FactureDocument {
 
   id: number;
   ref: string;
@@ -6,7 +6,15 @@ export interface DevisDocument {
   lieuCreation: string;
   linesDocument: number;
   personId: number;
-  delaiLivraisonSouhaite: string;
+
+  etat: string;
+montantPaye: number;
+  modeReglement: string;
+
+  dateLimiteReglement: string;
+
+  details: string;
+
   achat: boolean;
   documenttotalHT: number;
   documenttotalTVA: number;

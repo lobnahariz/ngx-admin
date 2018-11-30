@@ -20,8 +20,10 @@ import {AppService} from './app.service';
 import { LoginComponent } from './login/login.component';
 import {AuthenticationService} from "./service/authentication-service";
 import {Alerter} from "./service/alerter.service";
+import { RegisterComponent } from './register/register.component';
+
 @NgModule({
-  declarations: [AppComponent, LoginComponent],
+  declarations: [AppComponent, LoginComponent, RegisterComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -30,7 +32,7 @@ import {Alerter} from "./service/alerter.service";
     HttpModule,
     NgbModule.forRoot(),
     ThemeModule.forRoot(),
-    CoreModule.forRoot()
+    CoreModule.forRoot(),
   ],
   bootstrap: [AppComponent],
   providers: [

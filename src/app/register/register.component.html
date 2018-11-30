@@ -1,0 +1,72 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<div class="container">
+  <div id="loginbox" class="mainbox col-md-4 col-sm-8 ">
+    <div class="panel panel-info" >
+      <div class="panel-heading">
+        <div class="panel-title">Register</div>
+      </div>
+
+      <div class="panel-body" >
+
+        <div style="display:none" class="alert alert-danger col-sm-12"></div>
+
+        <div id="login-alert" class="alert alert-danger" *ngIf="message">
+          <strong>{{message}}</strong>
+        </div>
+        <form [formGroup]="registerForm"  #b="ngForm"(ngSubmit)="register(b.value)" >
+          <div class="form-group">
+            <label class="col-md-3 control-label">Email</label>
+            <div class="col-md-9">
+              <input type="text" formControlName="email" class="form-control" placeholder="email" >
+
+            </div>
+
+          </div>
+
+          <div class="form-group">
+            <label class="col-md-3 control-label">Login</label>
+            <div class="col-md-9">
+              <input type="text" formControlName="username" class="form-control" placeholder="login" >
+
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">MotDePasse</label>
+            <div class="col-md-9">
+              <input type="password" class="form-control" formControlName="password" placeholder="mot de passe">
+            </div>
+          </div>
+          <div class="form-group">
+            <label  class="col-md-3 control-label">Confirm MotDePasse</label>
+            <div class="col-md-9">
+              <input type="password" class="form-control" formControlName="repassword" placeholder="confirm mot de passe">
+            </div>
+          </div>
+
+
+
+
+          <div style="margin-top:10px" class="form-group">
+            <!-- Button -->
+
+            <div class="col-sm-12 controls">
+              <!-- <a id="btn-login" href="#" type="submit" class="btn btn-success">Login  </a>-->
+              <div class="form-group">
+                <button  class="btn btn-primary" type="submit">Register</button>
+              </div>
+            </div>
+          </div>
+
+        </form>
+
+
+
+      </div>
+    </div>
+  </div>
+
+</div>
