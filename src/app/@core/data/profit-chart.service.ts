@@ -28,7 +28,7 @@ export class ProfitChartService {
       year: this.getDataForYearPeriod(),
     };
   }
-
+array: any = [];
   private getDataForWeekPeriod(): ProfitChart {
     const nPoint = this.period.getWeeks().length;
 
@@ -44,13 +44,12 @@ export class ProfitChartService {
 
   private getDataForMonthPeriod(): ProfitChart {
     const nPoint = this.period.getMonths().length;
-
     return {
       chartLabel: this.period.getMonths(),
       data: [
-        this.getRandomData(nPoint),
-        this.getRandomData(nPoint),
-        this.getRandomData(nPoint),
+        this.getRandomDataMonthly(nPoint),
+        this.getRandomDataMonthly(nPoint),
+       this.getRandomDataMonthly(nPoint),
       ],
     };
   }
@@ -69,11 +68,35 @@ export class ProfitChartService {
   }
 
   private getRandomData(nPoints: number): number[] {
-    return Array.from(Array(nPoints)).map(() => {
-      return Math.round(Math.random() * 500);
-    });
+     this.array.push(33);
+    this.array.push(23);
+    this.array.push(334);
+    this.array.push(12);
+    this.array.push(22);
+    this.array.push(254);
+    this.array.push(65);
+    this.array.push(76);
+    this.array.push(54);
+return this.array;
+    // return Array.from(Array(nPoints)).map(() => {
+   //   return Math.round(Math.random() * 500);
+   // });
   }
-
+  private getRandomDataMonthly(nPoints: number): number[] {
+    this.array.push(332);
+    this.array.push(2);
+    this.array.push(66);
+    this.array.push(56);
+    this.array.push(99);
+    this.array.push(100);
+    this.array.push(102);
+    this.array.push(23);
+    this.array.push(98);
+    return this.array;
+    // return Array.from(Array(nPoints)).map(() => {
+    //   return Math.round(Math.random() * 500);
+    // });
+  }
   getProfitChartData(period: string): ProfitChart {
     return this.data[period];
   }

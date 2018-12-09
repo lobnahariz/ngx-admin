@@ -20,8 +20,9 @@ export class AjouterFactureComponent implements OnInit {
   lineDocument: LineDocument;
   idEntete: string;
   event: any;
-  marked = false;
+  marked = "Vente";
   theCheckbox = false;
+  theCheckboxStock = false;
 etat: any;
   quantiteStock = "";
   produitCodeExiste:any ="";
@@ -31,6 +32,7 @@ documenttotalHT: any = 0;
   documenttotalTTC: any = 0;
   documenttotalTTCReduction: any = 0;
 
+  modifierStock="Non";
   constructor(private devisService: AuthenticationService, private df: FormBuilder, private router: Router) {
     this.devisForm = this.df.group({
       ref: ['', Validators.required],
@@ -47,6 +49,7 @@ messageRefExisteDeja: any = "";
   test: Array<any> = [];
   requieredClient = "";
   requieredLine = "";
+  verifMontantPaye = "";
   data = [];
   xx = [];
   yy: Array<any> = [];
@@ -116,9 +119,18 @@ messageRefExisteDeja: any = "";
   modeSelectChangeHandler(event){
 this.modeSelected =  event.target.value;
   }
+
+  toggleStock(e) {
+    this.modifierStock ="Oui";
+  }
   toggleVisibility(e) {
-    this.marked = e.target.checked;
-    if (this.marked === true) {
+    if( e.target.checked ) {
+      this.marked = "Achat";
+    }else{
+  this.marked = "Vente";
+
+}
+    if (this.marked === "Achat") {
       this.devisService.getFournisseurs().subscribe(
         data => {
           this.selectName = "Select Fournisseur";
@@ -185,10 +197,18 @@ this.modeSelected =  event.target.value;
     let b: any = true;
     this.requieredClient="";
     this.quantiteStock = "";
+    this.verifMontantPaye = "";
     let compteur= 0;
+console.log(formValue['documenttotalTTCReduction'] );
+    console.log(formValue['montantPaye'] );
 
     if (this.msg === '') {
       this.requieredClient = "Selectionnez svp";
+    } else if (   (this.documenttotalTTCReduction + 0.1) < +formValue['montantPaye'] ) {
+      console.log(this.documenttotalTTCReduction );
+      console.log(+formValue['montantPaye'] );
+
+      this.verifMontantPaye = "Montant payé incorrect";
     } else {
 
       let newFacture: FactureDocument = {
@@ -209,6 +229,7 @@ this.modeSelected =  event.target.value;
         documenttotalReduction: this.documenttotalReduction,
         documenttotalTTC: this.documenttotalTTC,
         documenttotalTTCReduction: this.documenttotalTTCReduction,
+        modifierStock: this.modifierStock
       };
 
       this.devisService.getFacture().subscribe(
@@ -254,15 +275,16 @@ this.modeSelected =  event.target.value;
 
                         this.devisService.addFactureDocument(newFacture)
                           .subscribe(res => {
+
                               newFacture.id = res.id;
                               this.createLineDocument(newFacture, newFacture.id);
-
+                              if (this.modifierStock === "Oui") {
                               this.linesDocument.forEach(prod => {
                                 this.devisService.getProduitByRef(prod.code)
                                   .subscribe(ress => {
-                                    if(newFacture.achat) {
+                                    if (newFacture.achat) {
                                       ress.quantite = +prod.qte + +ress.quantite;
-                                    }else {
+                                    } else {
                                       ress.quantite = +ress.quantite - +prod.qte;
                                     }
                                     this.devisService.addProduit(ress).subscribe(
@@ -271,11 +293,15 @@ this.modeSelected =  event.target.value;
                                         console.log('error');
                                       });
                                     //  this.event.confirm.resolve(this.event.newData);
-                                  },error => {
+                                  }, error => {
                                     console.log("err");
                                     // this.event.confirm.reject();
                                   });
                               });
+
+                            }
+
+
                             },
                             err => {alert("An error occurred while saving the devis"); }
                           );

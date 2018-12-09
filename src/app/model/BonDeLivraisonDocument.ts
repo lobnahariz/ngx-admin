@@ -9,10 +9,14 @@ export interface BonDeLivraisonDocument {
   accuse_reception: boolean;
   receptionDate: string;
   receptionPersonne: string;
-  achat: boolean;
+  achat: string;
+  modifierStock?: string;
   documenttotalHT: number;
   documenttotalTVA: number;
   documenttotalReduction: number;
   documenttotalTTC: number;
   documenttotalTTCReduction: number;
+  createdBy?: string;
+  modifiedBy?: string;
+  dateCreationAudit?: string;
 }

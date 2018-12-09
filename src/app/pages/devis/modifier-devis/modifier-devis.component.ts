@@ -37,7 +37,7 @@ export class ModifierDevisComponent implements OnInit {
     columns: {
       achat: {
         title: 'Type',
-        type: 'boolean',
+        type: 'string',
         editable: false,
 
 
@@ -59,6 +59,26 @@ export class ModifierDevisComponent implements OnInit {
 
       },
       delaiLivraisonSouhaite: {
+        title: 'Delai Livraison Souhaite',
+        type: 'string',
+
+      },
+      createdBy: {
+        title: 'Delai Livraison Souhaite',
+        type: 'string',
+
+      },
+      modifiedBy: {
+        title: 'Delai Livraison Souhaite',
+        type: 'string',
+
+      },
+      dateCreationAudit: {
+        title: 'Delai Livraison Souhaite',
+        type: 'string',
+
+      },
+      derniereDateModif: {
         title: 'Delai Livraison Souhaite',
         type: 'string',
 
@@ -92,9 +112,7 @@ export class ModifierDevisComponent implements OnInit {
 
   onSaveConfirm(event) {
     this.showLargeModal(event);
-console.log(event);
-console.log(event["newData"]);
-console.log(event["data"]);
+
   let newDevis: DevisDocument = {
       id: event['newData']['id'],
       ref: event['newData']['ref'],
@@ -109,19 +127,18 @@ console.log(event["data"]);
     documenttotalReduction: event['newData']['documenttotalReduction'],
     documenttotalTTC: event['newData']['documenttotalTTC'],
     documenttotalTTCReduction: event['newData']['documenttotalTTCReduction'],
+    createdBy: event['newData']['createdBy'],
+    dateCreationAudit: event['newData']['dateCreationAudit'],
     };
 
-    console.log(newDevis);
-   this.authorizationService.addEnteteDocument(newDevis)
+   this.authorizationService.updateEnteteDocument(newDevis)
       .subscribe(res => {
-          newDevis.id = res.id;
          this.ngOnInit();
         },
-        err => {alert("An error occurred while saving the devis"); }
+        err => {// @ts-ignore
+          alert("An error occurred while saving the devis"); }
       );
-    console.log("*******************");
 
-    console.log(event);
     event.confirm.resolve();
   }
 

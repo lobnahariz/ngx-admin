@@ -13,7 +13,7 @@ import {Client} from "../../../model/client";
   `],
 })
 export class AjoutClientComponent implements OnInit {
-
+  requieredLine:any = "";
   settings = {
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
@@ -53,21 +53,26 @@ export class AjoutClientComponent implements OnInit {
         type: 'string',
       },
       telephoneFixe: {
-        title: 'TelephoneFixe',
+        title: 'Fixe',
         type: 'string',
       },
       telephonePortable: {
-        title: 'TelephonePortable',
+        title: 'Portable',
         type: 'string',
       },
       rib: {
         title: 'Rib',
         type: 'string',
       },
+      ville: {
+        title: 'Ville',
+        type: 'string',
+      },
       adresse: {
         title: 'Adresse',
         type: 'string',
       },
+
     },
   };
 
@@ -106,42 +111,57 @@ export class AjoutClientComponent implements OnInit {
     }}
 
   onCreateConfirm(event) {
+    this.requieredLine ="";
+    this.isVide(event['newData']['libelle'],"libelle");
+    this.isVide(event['newData']['nom'],"nom");
+    this.isVide(event['newData']['prenom'],"prenom");
+    this.isVide(event['newData']['nomSociete'],"nomSociete");
+    this.isVide(event['newData']['mail'],"mail");
+    this.isVide(event['newData']['telephonePortable'],"telephonePortable");
+    this.isVide(event['newData']['adresse'],"adresse");
+    this.isVide(event['newData']['ville'],"ville");
 
-    let newClient: Client = {
-      id: null,
-   libelle: event['newData']['libelle'],
-   nom: event['newData']['nom'],
-   prenom: event['newData']['prenom'],
-   nomSociete: event['newData']['nomSociete'],
-   mail: event['newData']['mail'],
-   telephoneFixe: event['newData']['telephoneFixe'],
-   telephonePortable: event['newData']['telephonePortable'],
-   rib: event['newData']['rib'],
-   adresse: event['newData']['adresse'],
-    };
+    if(this.requieredLine === "") {
+      let newClient: Client = {
+        id: null,
+        libelle: event['newData']['libelle'],
+        nom: event['newData']['nom'],
+        prenom: event['newData']['prenom'],
+        nomSociete: event['newData']['nomSociete'],
+        mail: event['newData']['mail'],
+        telephoneFixe: event['newData']['telephoneFixe'],
+        telephonePortable: event['newData']['telephonePortable'],
+        rib: event['newData']['rib'],
+        adresse: event['newData']['adresse'],
+        ville: event['newData']['ville'],
+      };
 
-    this.authorizationService.addClient(newClient).subscribe(
-      data => {
-        newClient.id = data.id;
-        event.confirm.resolve();
-        this.ngOnInit();
-      }, err => {
+      this.authorizationService.addClient(newClient).subscribe(
+        data => {
+          newClient.id = data.id;
+          event.confirm.resolve();
+          this.ngOnInit();
+        }, err => {
 
-        event.confirm.reject();
-      });
+          event.confirm.reject();
+        });
 
 
-
+    }
   }
 
 
+  isVide(value: any,valeur: any) {
+    if(value === "") {
+      this.requieredLine = valeur+" est vide";
+    }
+  }
   // @ts-ignore
   onSaveConfirm(event) {
    // this.client = new Client(event['newData']['id'],event['newData']['libelle'], event['newData']['nom'], event['newData']['prenom'],event['newData']['nomSociete'],event['newData']['mail'],event['newData']['telephoneFixe'],event['newData']['telephonePortable'],event['newData']['rib'],event['newData']['adresse']);
 
-
     let newClient: Client = {
-      id: null,
+      id: event['newData']['id'],
       libelle: event['newData']['libelle'],
       nom: event['newData']['nom'],
       prenom: event['newData']['prenom'],
@@ -151,6 +171,9 @@ export class AjoutClientComponent implements OnInit {
       telephonePortable: event['newData']['telephonePortable'],
       rib: event['newData']['rib'],
       adresse: event['newData']['adresse'],
+      createdBy: event['newData']['createdBy'],
+      dateCreation: event['newData']['dateCreation'],
+      ville: event['newData']['ville'],
     };
 
     this.authorizationService.updateClient(newClient).subscribe(

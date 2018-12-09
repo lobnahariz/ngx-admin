@@ -48,7 +48,7 @@ export class EchartsAreaStackComponent implements AfterViewInit, OnDestroy {
           {
             type: 'category',
             boundaryGap: false,
-            data: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+            data: ['Jan', 'Feb', 'March', 'Apr', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
             axisTick: {
               alignWithLabel: true,
             },

@@ -23,13 +23,10 @@ export class ECommerceVisitorsAnalyticsComponent implements OnDestroy {
 
   setLegendItems(visitorsLegend): void {
     this.chartLegend = [
-      {
-        iconColor: visitorsLegend.firstIcon,
-        title: 'Unique Visitors',
-      },
+
       {
         iconColor: visitorsLegend.secondIcon,
-        title: 'Page Views',
+        title: 'Total Reparations Finis Par Mois',
       },
     ];
   }

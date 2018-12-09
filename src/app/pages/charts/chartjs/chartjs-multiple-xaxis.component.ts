@@ -19,7 +19,7 @@ export class ChartjsMultipleXaxisComponent implements OnDestroy {
       const chartjs: any = config.variables.chartjs;
 
       this.data = {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
         datasets: [{
           label: 'dataset - big points',
           data: [this.random(), this.random(), this.random(), this.random(), this.random(), this.random()],
@@ -75,7 +75,7 @@ export class ChartjsMultipleXaxisComponent implements OnDestroy {
               display: true,
               scaleLabel: {
                 display: true,
-                labelString: 'Month',
+                labelString: 'Mois',
               },
               gridLines: {
                 display: true,
@@ -91,7 +91,7 @@ export class ChartjsMultipleXaxisComponent implements OnDestroy {
               display: true,
               scaleLabel: {
                 display: true,
-                labelString: 'Value',
+                labelString: 'Valeur',
               },
               gridLines: {
                 display: true,

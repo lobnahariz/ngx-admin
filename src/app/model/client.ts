@@ -9,6 +9,9 @@ export class Client {
   public  telephonePortable?: string;
   public  rib?: string;
   public  adresse?: string;
-
+public createdBy?: string;
+  public modifiedBy?: string;
+  public dateCreation?: string;
+  public ville?: string;
 }
 

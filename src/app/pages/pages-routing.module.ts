@@ -49,13 +49,22 @@ const routes: Routes = [
       loadChildren: './facture/facture.module#FactureModule',
     },
     {
+      path: 'document',
+      loadChildren: './document/document.module#DocumentModule',
+    },
+    {
       path: 'avoir',
       loadChildren: './avoir/avoir.module#AvoirModule',
     },
     {
       path: 'bon-livraison',
       loadChildren: './bon-livraison/bon-livraison.module#BonLivraisonModule',
-    }, {
+    },
+    {
+      path: 'reclamation',
+      loadChildren: './reclamation/reclamation.module#ReclamationModule',
+    },
+    {
     path: 'forms',
     loadChildren: './forms/forms.module#FormsModule',
   }, {

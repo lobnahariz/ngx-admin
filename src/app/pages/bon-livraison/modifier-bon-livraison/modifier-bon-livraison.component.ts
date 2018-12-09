@@ -36,7 +36,7 @@ export class ModifierBonLivraisonComponent implements OnInit {
     columns: {
       achat: {
         title: 'Type',
-        type: 'boolean',
+        type: 'string',
         editable: false,
 
       },
@@ -60,6 +60,7 @@ export class ModifierBonLivraisonComponent implements OnInit {
         title: 'Personne Reception',
         type: 'string',
       },
+
     },
   };
   source:any;
@@ -106,11 +107,13 @@ export class ModifierBonLivraisonComponent implements OnInit {
       documenttotalReduction: event['newData']['documenttotalReduction'],
       documenttotalTTC: event['newData']['documenttotalTTC'],
       documenttotalTTCReduction: event['newData']['documenttotalTTCReduction'],
+      createdBy: event['newData']['createdBy'],
+      dateCreationAudit: event['newData']['dateCreationAudit'],
     };
 
-    this.authorizationService.addBonDeLivraisonDocument(newBonDeLivraison)
+    this.authorizationService.updateBonDeLivraisonDocument(newBonDeLivraison)
       .subscribe(res => {
-          newBonDeLivraison.id = res.id;
+
           this.ngOnInit();
         },
         err => {alert("An error occurred while saving the devis"); }
@@ -120,7 +123,7 @@ export class ModifierBonLivraisonComponent implements OnInit {
 
   showLargeModal(event) {
     const activeModal = this.modalService.open(LigneModalComponent, { size: 'lg', container: 'nb-layout' });
-    activeModal.componentInstance.modalHeader = "Devis N° "+event['data']['ref']+"-"+event['data']['id'];
+    activeModal.componentInstance.modalHeader = "Bon De Livraison N° "+event['data']['ref']+"-"+event['data']['id'];
   }
 
 

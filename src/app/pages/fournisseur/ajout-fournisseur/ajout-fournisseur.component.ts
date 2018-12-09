@@ -13,7 +13,7 @@ import {Router} from "@angular/router";
   `],
 })
 export class AjoutFournisseurComponent implements OnInit {
-
+  requieredLine:any = "";
   settings = {
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
@@ -53,15 +53,19 @@ export class AjoutFournisseurComponent implements OnInit {
         type: 'string',
       },
       telephoneFixe: {
-        title: 'TelephoneFixe',
+        title: 'Fixe',
         type: 'string',
       },
       telephonePortable: {
-        title: 'TelephonePortable',
+        title: 'Portable',
         type: 'string',
       },
       rib: {
         title: 'Rib',
+        type: 'string',
+      },
+      ville: {
+        title: 'Ville',
         type: 'string',
       },
       adresse: {
@@ -88,7 +92,11 @@ export class AjoutFournisseurComponent implements OnInit {
       });
   }
 
-
+  isVide(value: any,valeur: any) {
+    if(value === "") {
+      this.requieredLine = valeur+" est vide";
+    }
+  }
   onDeleteConfirm(event) {
     console.log();
     if (window.confirm('Are you sure you want to delete?')) {
@@ -102,8 +110,21 @@ export class AjoutFournisseurComponent implements OnInit {
         });
     }}
 
-  onCreateConfirm(event) {
-    this.fournisseur = new Fournisseur(event['newData']['id'],event['newData']['libelle'], event['newData']['nom'], event['newData']['prenom'],event['newData']['nomSociete'],event['newData']['mail'],event['newData']['telephoneFixe'],event['newData']['telephonePortable'],event['newData']['rib'],event['newData']['adresse']);
+onCreateConfirm(event) {
+    this.requieredLine ="";
+    this.isVide(event['newData']['libelle'],"libelle");
+    this.isVide(event['newData']['nom'],"nom");
+    this.isVide(event['newData']['prenom'],"prenom");
+    this.isVide(event['newData']['nomSociete'],"nomSociete");
+    this.isVide(event['newData']['mail'],"mail");
+    this.isVide(event['newData']['telephonePortable'],"telephonePortable");
+    this.isVide(event['newData']['adresse'],"adresse");
+    this.isVide(event['newData']['ville'],"ville");
+
+    if(this.requieredLine === ""){
+      this.fournisseur = new Fournisseur(event['newData']['id'],event['newData']['libelle'], event['newData']['nom'], event['newData']['prenom'],event['newData']['nomSociete'],event['newData']['mail'],event['newData']['telephoneFixe'],event['newData']['telephonePortable'],event['newData']['rib'],event['newData']['adresse']),null,null,null,event['newData']['ville'];
+
+    }
 
     this.authorizationService.addFournisseur(this.fournisseur).subscribe(
       data => {
@@ -122,7 +143,7 @@ export class AjoutFournisseurComponent implements OnInit {
 
   // @ts-ignore
   onSaveConfirm(event) {
-    this.fournisseur = new Fournisseur(event['newData']['id'],event['newData']['libelle'], event['newData']['nom'], event['newData']['prenom'],event['newData']['nomSociete'],event['newData']['mail'],event['newData']['telephoneFixe'],event['newData']['telephonePortable'],event['newData']['rib'],event['newData']['adresse']);
+    this.fournisseur = new Fournisseur(event['newData']['id'],event['newData']['libelle'], event['newData']['nom'], event['newData']['prenom'],event['newData']['nomSociete'],event['newData']['mail'],event['newData']['telephoneFixe'],event['newData']['telephonePortable'],event['newData']['rib'],event['newData']['adresse'],event['data']['createdBy'],null,event['data']['dateCreation'],event['newData']['ville']);
 
     this.authorizationService.updateFournisseur(this.fournisseur).subscribe(
       data => {

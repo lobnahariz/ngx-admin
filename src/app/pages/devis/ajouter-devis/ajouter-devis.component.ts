@@ -21,7 +21,7 @@ export class AjouterDevisComponent implements OnInit {
   lineDocument: LineDocument;
   idEntete: string;
   event: any;
-  marked = false;
+  marked = "Vente";
   theCheckbox = false;
 
 
@@ -110,8 +110,13 @@ export class AjouterDevisComponent implements OnInit {
   }
 
   toggleVisibility(e) {
-    this.marked = e.target.checked;
-    if (this.marked === true) {
+    if( e.target.checked ) {
+      this.marked = "Achat";
+    }else{
+      this.marked = "Vente";
+
+    }
+    if (this.marked === "Achat") {
       this.devisService.getFournisseurs().subscribe(
         data => {
           this.selectName = "Select Fournisseur";
@@ -381,7 +386,6 @@ isNotNumber(value: any,valeur: any){
 
           });
           if (b === true) {
-            console.log(b + "*******3*****");
 
             this.devisService.addEnteteDocument(newDevis)
               .subscribe(res => {

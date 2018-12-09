@@ -1,5 +1,7 @@
 import { AfterViewInit, Component, OnDestroy } from '@angular/core';
 import { NbThemeService } from '@nebular/theme';
+import {AuthenticationService} from "../../../service/authentication-service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'ngx-echarts-bar',
@@ -10,17 +12,34 @@ import { NbThemeService } from '@nebular/theme';
 export class EchartsBarComponent implements AfterViewInit, OnDestroy {
   options: any = {};
   themeSubscription: any;
+  listeClient: Array<any> = [];
+  listeValeur: Array<any> = [];
 
-  constructor(private theme: NbThemeService) {
+  constructor(private theme: NbThemeService,private authorizationService: AuthenticationService,private router: Router) {
   }
 
   ngAfterViewInit() {
+
+
+
+
     this.themeSubscription = this.theme.getJsTheme().subscribe(config => {
 
       const colors: any = config.variables;
       const echarts: any = config.variables.echarts;
 
-      this.options = {
+
+      this.authorizationService.getMontantApayeParClient().subscribe(
+        total => {
+          total.forEach(c => {
+
+            this.listeClient.push(c.nom);
+            this.listeValeur.push(c.nombre);
+          });
+
+
+
+          this.options = {
         backgroundColor: echarts.bg,
         color: [colors.primaryLight],
         tooltip: {
@@ -38,7 +57,7 @@ export class EchartsBarComponent implements AfterViewInit, OnDestroy {
         xAxis: [
           {
             type: 'category',
-            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            data: this.listeClient,
             axisTick: {
               alignWithLabel: true,
             },
@@ -79,10 +98,12 @@ export class EchartsBarComponent implements AfterViewInit, OnDestroy {
             name: 'Score',
             type: 'bar',
             barWidth: '60%',
-            data: [10, 52, 200, 334, 390, 330, 220],
+            data: this.listeValeur,
           },
         ],
       };
+
+        });
     });
   }
 

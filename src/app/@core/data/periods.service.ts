@@ -21,13 +21,13 @@ export class PeriodsService {
 
   getWeeks() {
     return [
-      'Mon',
-      'Tue',
-      'Wed',
-      'Thu',
-      'Fri',
-      'Sat',
-      'Sun',
+      'Lun',
+      'Mar',
+      'Mer',
+      'Jeu',
+      'Vend',
+      'Samd',
+      'Dim',
     ];
   }
 }

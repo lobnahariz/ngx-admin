@@ -26,10 +26,7 @@ export class ECommerceVisitorsAnalyticsChartComponent implements AfterViewInit, 
   ];
   private outerLinePoints: number[] = [
     85, 71, 59, 50, 45, 42, 41, 44 , 58, 88,
-    136 , 199, 267, 326, 367, 391, 400, 397,
-    376, 319, 200, 104, 60, 41, 36, 37, 44,
-    55, 74, 100 , 131, 159, 180, 193, 199, 200,
-    195, 184, 164, 135, 103, 73, 50, 33, 22, 15, 11,
+    136 , 199,
   ];
   private months: string[] = [
     'Jan', 'Feb', 'Mar',
@@ -155,7 +152,7 @@ export class ECommerceVisitorsAnalyticsChartComponent implements AfterViewInit, 
         },
       },
       series: [
-        this.getInnerLine(eTheme),
+      //  this.getInnerLine(eTheme),
         this.getOuterLine(eTheme),
       ],
     };

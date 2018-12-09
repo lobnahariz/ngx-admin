@@ -9,4 +9,7 @@ export class LineDocument {
   totalTTC: number;
   enteteId: number;
   reduction: number;
+   createdBy?: string;
+   modifiedBy?: string;
+   dateCreationAudit?: string
 }

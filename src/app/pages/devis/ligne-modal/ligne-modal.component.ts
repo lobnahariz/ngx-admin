@@ -24,6 +24,11 @@ export class LigneModalComponent implements OnInit {
 
   }
   settings = {
+    actions: {
+      add: false,
+      edit: true,
+      delete: true,
+    },
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
       createButtonContent: '<i class="nb-checkmark"></i>',
@@ -104,10 +109,12 @@ export class LigneModalComponent implements OnInit {
           documenttotalReduction: this.documenttotalReduction,
           documenttotalTTC: this.documenttotalTTC,
           documenttotalTTCReduction: this.documenttotalTTCReduction,
+          createdBy: data.createdBy,
+          dateCreationAudit: data.dateCreationAudit,
         };
 
 
-        this.authorizationService.addEnteteDocument(newDevis)
+        this.authorizationService.updateEnteteDocument(newDevis)
           .subscribe(res => {
             },
             err => {
@@ -261,6 +268,8 @@ export class LigneModalComponent implements OnInit {
           totalTTC: event['newData']['totalTTC'],
           enteteId: event['newData']['enteteId'],
           reduction: event['newData']['reduction'],
+          createdBy: event['newData']['createdBy'],
+          dateCreationAudit: event['newData']['dateCreationAudit'],
         };
 
 
@@ -347,7 +356,7 @@ export class LigneModalComponent implements OnInit {
 
 
 
-  createLineDocument(id: number) {
+ /* createLineDocument(id: number) {
    this.authorizationService.getLinesDocumentByDocumentId(this.entetId)
      .subscribe(result => {
        this.linesDocument = result;
@@ -373,5 +382,5 @@ export class LigneModalComponent implements OnInit {
        },
          err => {alert("An error occurred while saving the devis"); }
       );
-  }
+  }*/
 }

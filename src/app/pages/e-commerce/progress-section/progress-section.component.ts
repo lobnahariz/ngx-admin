@@ -8,22 +8,22 @@ import {Component} from '@angular/core';
 export class ECommerceProgressSectionComponent {
   progressInfoData = [
     {
-      title: 'Today’s Profit',
+      title: 'Total Vente Aujourdui',
       value: 572900,
       activeProgress: 70,
-      description: 'Better than last week (70%)',
+      description: 'Mieux que hier (70%)',
     },
     {
-      title: 'New Orders',
+      title: 'Demandes de Reparation Aujourdui',
       value: 6378,
       activeProgress: 30,
-      description: 'Better than last week (30%)',
+      description: 'Mieux que hier (70%)',
     },
     {
-      title: 'New Comments',
+      title: 'Total Gain de Reparation Aujourdui ',
       value: 200,
       activeProgress: 55,
-      description: 'Better than last week (55%)',
+      description: 'Mieux que hier (70%)',
     },
   ];
 }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Produit} from '../../../model/produit';
 import {AuthenticationService} from '../../../service/authentication-service';
 import { Router} from '@angular/router';
+import {Client} from "../../../model/client";
 
 @Component({
   selector: 'ngx-ajout-produit',
@@ -46,7 +47,7 @@ export class AjoutProduitComponent implements OnInit {
       },
     },
   };
-
+verifChamps: any="";
  //source: LocalDataSource = new LocalDataSource();
  produit: Produit;
 source:any;
@@ -78,38 +79,77 @@ source:any;
           event.confirm.reject();
         });
   }}
+  isVide(value: any, valeur: any) {
+    if (value === "") {
+      this.verifChamps = valeur + " est vide";
+    }
+  }
 
+  isNotNumber(value: any, valeur: any) {
+    if (isNaN(value)) {
+      this.verifChamps = valeur + " doit etre un nombre";
+    }
+  }
   onCreateConfirm(event) {
-    this.produit = new Produit(event['newData']['id'],event['newData']['ref'], event['newData']['quantite'], event['newData']['prixUnitaire']);
+    this.verifChamps = "";
+    let newProduit:  Produit= {
+        id: null,
+      ref: event['newData']['ref'],
+        quantite: event['newData']['quantite'],
+      prixUnitaire:event['newData']['prixUnitaire'],
+        createdBy: event['newData']['createdBy'],
+        dateCreationAudit: event['newData']['dateCreationAudit'],
+    };
+    this.isVide(event['newData']['ref'], "Ref");
 
-    this.authorizationService.addProduit(this.produit).subscribe(
-      data => {
-        console.log(data);
-        event.confirm.resolve();
-      }, err => {
-        console.log('error');
-        event.confirm.reject();
-      });
+    this.isVide(event['newData']['quantite'], "Qte");
+    this.isNotNumber(event['newData']['quantite'], "Qte");
 
-    this.ngOnInit();
+    this.isVide(event['newData']['prixUnitaire'], "PrixUnitaire");
+    this.isNotNumber(event['newData']['prixUnitaire'], "PrixUnitaire");
+    if(this.verifChamps === "") {
+      this.authorizationService.addProduit(newProduit).subscribe(
+        data => {
+          this.ngOnInit();
+          event.confirm.resolve();
+        }, err => {
+          console.log('error');
+          event.confirm.reject();
+        });
+    }
 
   }
 
 
   // @ts-ignore
   onSaveConfirm(event) {
-    this.produit = new Produit(event['newData']['id'],event['newData']['ref'], event['newData']['quantite'], event['newData']['prixUnitaire']);
+    this.verifChamps = "";
+let   newProduit : Produit = {
+      id:event['newData']['id'],
+      ref:event['newData']['ref'],
+      quantite: event['newData']['quantite'],
+       prixUnitaire:event['newData']['prixUnitaire'],
+       createdBy: event['newData']['createdBy'],
+       dateCreationAudit: event['newData']['dateCreationAudit'],
+    };
+    this.isVide(event['newData']['ref'], "Ref");
 
-    this.authorizationService.updateProduit(this.produit).subscribe(
-      data => {
-        console.log(data);
-        event.confirm.resolve();
-      }, err => {
-        console.log('error');
-        event.confirm.reject();
-      });
+    this.isVide(event['newData']['quantite'], "Qte");
+    this.isNotNumber(event['newData']['quantite'], "Qte");
 
-    this.ngOnInit();
+    this.isVide(event['newData']['prixUnitaire'], "PrixUnitaire");
+    this.isNotNumber(event['newData']['prixUnitaire'], "PrixUnitaire");
+
+    if(this.verifChamps === "") {
+      this.authorizationService.updateProduit(newProduit).subscribe(
+        data => {
+          this.ngOnInit();
+          event.confirm.resolve();
+        }, err => {
+          console.log('error');
+          event.confirm.reject();
+        });
+    }
   }
 
 

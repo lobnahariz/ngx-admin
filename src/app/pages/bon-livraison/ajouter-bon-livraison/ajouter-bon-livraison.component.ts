@@ -45,7 +45,7 @@ accuse:any= false;
   test: Array<any> = [
   ];
   data = [];
-  marked = false;
+  marked = "Vente";
   selectName: string= 'Select Client';
   file:  Array<any> = [
   ];
@@ -193,8 +193,13 @@ articleExiste(ref: string,event:any) {
   }
 
   toggleVisibilityAchat(e){
-    this.marked = e.target.checked;
-    if (this.marked === true) {
+    if( e.target.checked ) {
+      this.marked = "Achat";
+  }else{
+  this.marked = "Vente";
+
+}
+    if (this.marked === "Achat") {
       this.bonLivraisonService.getFournisseurs().subscribe(
         data => {
           this.selectName= "Select Fournisseur";
@@ -310,7 +315,7 @@ articleExiste(ref: string,event:any) {
                     if( this.quantiteStock === "")
                     {
                       console.log(this.quantiteStock+"******************");
-                      this.bonLivraisonService.addBonDeLivraisonEntete(newBonDeLivraison)
+                      this.bonLivraisonService.addBonDeLivraisonDocument(newBonDeLivraison)
                         .subscribe(res => {
                             newBonDeLivraison.id = res.id;
 

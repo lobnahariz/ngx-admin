@@ -93,6 +93,14 @@ export const MENU_ITEMS: NbMenuItem[] = [
         title: 'Nouvelle Facture',
         link: '/pages/facture/nouvelleFacture',
       },
+      {
+        title: 'Modifier Reglement',
+        link: '/pages/facture/modifierReglement',
+      },
+      {
+        title: 'Consulter Facture',
+        link: '/pages/facture/consulterFacture',
+      },
     ],
   },
 
@@ -106,7 +114,26 @@ export const MENU_ITEMS: NbMenuItem[] = [
       },
     ],
   },
-
+  {
+    title: 'Document',
+    icon: 'nb-compose',
+    children: [
+      {
+        title: 'Nouveau Doc',
+        link: '/pages/document/nouveauDocument',
+      },
+    ],
+  },
+  {
+    title: 'Reclamation',
+    icon: 'nb-layout-default',
+    children: [
+      {
+        title: 'Gestion Reclamation',
+        link: '/pages/reclamation/gestionReclamation',
+      },
+    ],
+  },
   {
     title: 'Forms',
     icon: 'nb-compose',

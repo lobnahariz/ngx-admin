@@ -15,6 +15,12 @@
               </label>
             </div>
             <div class="content-row">
+              <label class="container">
+                <nb-checkbox [(ngModel)]="theCheckboxStock" [ngModelOptions]="{standalone: true}" data-md-icheck (change)="toggleStock($event)">Modifier Stock</nb-checkbox>
+
+              </label>
+            </div>
+            <div class="content-row">
               <div class="alert alert-danger" style="margin-top: 3px" *ngIf="requieredLine">
                 {{requieredLine}}
               </div>
@@ -22,6 +28,16 @@
             <div class="content-row">
               <div class="alert alert-danger" style="margin-top: 3px" *ngIf="produitCodeExiste === 'Produit n existe pas'">
                 {{produitCodeExiste}}
+              </div>
+            </div>
+            <div class="content-row">
+              <div class="alert alert-danger" style="margin-top: 3px" *ngIf="quantiteStock">
+                {{quantiteStock}}
+              </div>
+            </div>
+            <div class="content-row">
+              <div class="alert alert-danger" style="margin-top: 3px" *ngIf="verifMontantPaye">
+                {{verifMontantPaye}}
               </div>
             </div>
 

@@ -1,0 +1,59 @@
+<div class="modal-header">
+  <span>{{ modalHeader }}</span>
+  <button class="close" aria-label="Close" (click)="closeModal()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+
+</div>
+<div class="modal-body">
+  <table class="table">
+    <tbody>
+    <tr>
+      <th>
+        Total HT
+      </th>
+      <td>{{documenttotalHT| number}}</td>
+      <th>
+        Total TVA
+      </th>
+      <td>{{documenttotalTVA| number}}</td>
+      <th>
+        Reduction
+      </th>
+      <td>{{documenttotalReduction| number}}</td>
+
+      <th>
+        Total TTC
+      </th>
+      <td>{{documenttotalTTC| number}}</td>
+      <th>
+        Total TTC après réductions </th>
+
+      <td>{{documenttotalTTCReduction | number}}</td>
+    </tr>
+
+
+    </tbody>
+
+  </table>
+  <div class="content-row">
+    <div class="alert alert-danger" style="margin-top: 3px" *ngIf="produitCodeExiste === 'Produit n existe pas'">
+      {{produitCodeExiste}}
+    </div>
+  </div>
+  <div class="content-row">
+    <div class="alert alert-danger" style="margin-top: 3px" *ngIf="quantiteStock">
+      {{quantiteStock}}
+    </div>
+  </div>
+  <nb-card-body>
+    <ng2-smart-table  [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)" (editConfirm)="onSaveConfirm($event)" (createConfirm)="onCreateConfirm($event)"
+    >
+    </ng2-smart-table>
+  </nb-card-body>
+
+
+</div>
+<div class="modal-footer">
+  <button class="btn btn-md btn-primary" (click)="closeModal()">Terminer</button>
+</div>
