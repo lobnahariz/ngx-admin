@@ -21,8 +21,8 @@ export class ChartjsMultipleXaxisComponent implements OnDestroy {
       this.data = {
         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
         datasets: [{
-          label: 'dataset - big points',
-          data: [this.random(), this.random(), this.random(), this.random(), this.random(), this.random()],
+          label: 'Telephone',
+          data: [4350,3700,5800,3400,4760,4675,3500,6800,3400,2600,4800,4300],
           borderColor: colors.primary,
           backgroundColor: colors.primary,
           fill: false,
@@ -30,8 +30,8 @@ export class ChartjsMultipleXaxisComponent implements OnDestroy {
           pointRadius: 8,
           pointHoverRadius: 10,
         }, {
-          label: 'dataset - individual point sizes',
-          data: [this.random(), this.random(), this.random(), this.random(), this.random(), this.random()],
+          label: 'Accessoires',
+          data: [1000,800,700,600,500,800,900,1200,500,400,800,600],
           borderColor: colors.dangerLight,
           backgroundColor: colors.dangerLight,
           fill: false,
@@ -39,22 +39,41 @@ export class ChartjsMultipleXaxisComponent implements OnDestroy {
           pointRadius: 8,
           pointHoverRadius: 10,
         }, {
-          label: 'dataset - large pointHoverRadius',
-          data: [this.random(), this.random(), this.random(), this.random(), this.random(), this.random()],
+          label: 'Musique',
+          data: [800,650,720,430,760,340,540,730,520,850,320,530],
           borderColor: colors.info,
           backgroundColor: colors.info,
           fill: false,
           pointRadius: 8,
           pointHoverRadius: 10,
         }, {
-          label: 'dataset - large pointHitRadius',
-          data: [this.random(), this.random(), this.random(), this.random(), this.random(), this.random()],
+          label: 'Audio',
+          data: [300,150,260,170,250,200,170,130,220,180,150,300],
           borderColor: colors.success,
           backgroundColor: colors.success,
           fill: false,
           pointRadius: 8,
           pointHoverRadius: 10,
-        }],
+        },
+          {
+            label: 'Ordinateurs Portables',
+            data: [4000,4600,3200,5800,4200,3600,3200,4556,5700,6800,4300,3200],
+            borderColor: '#FF7F50',
+            backgroundColor: '#FF7F50',
+            fill: false,
+            pointRadius: 8,
+            pointHoverRadius: 10,
+          },
+          {
+            label: 'Ordinateur Bureau',
+            data: [2400,1400,3500,1200,4200,1000,800,1400,1200,850,2300,3400],
+            borderColor: '#696969',
+            backgroundColor: '#696969',
+            fill: false,
+            pointRadius: 8,
+            pointHoverRadius: 10,
+          }
+        ],
       };
 
       this.options = {

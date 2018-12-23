@@ -72,6 +72,38 @@ export class AjoutFournisseurComponent implements OnInit {
         title: 'Adresse',
         type: 'string',
       },
+      categorieCode: {
+        title: 'CategorieCode',
+        type: 'string',
+      },
+      createdBy: {
+        title: 'Crée Par',
+        type: 'string',
+        updateable: false,
+        addable: false,
+        editable: false,
+      },
+      modifiedBy: {
+        title: 'Modifier Par',
+        type: 'string',
+        updateable: false,
+        addable: false,
+        editable: false,
+      },
+      dateCreation: {
+        title: 'Date Creation',
+        type: 'string',
+        updateable: false,
+        addable: false,
+        editable: false,
+      },
+      derniereDateModif: {
+        title: 'Derniere Date Modif',
+        type: 'string',
+        updateable: false,
+        addable: false,
+        editable: false,
+      },
     },
   };
 
@@ -120,32 +152,84 @@ onCreateConfirm(event) {
     this.isVide(event['newData']['telephonePortable'],"telephonePortable");
     this.isVide(event['newData']['adresse'],"adresse");
     this.isVide(event['newData']['ville'],"ville");
+  this.isVide(event['newData']['categorieCode'],"categorieCode");
 
     if(this.requieredLine === ""){
-      this.fournisseur = new Fournisseur(event['newData']['id'],event['newData']['libelle'], event['newData']['nom'], event['newData']['prenom'],event['newData']['nomSociete'],event['newData']['mail'],event['newData']['telephoneFixe'],event['newData']['telephonePortable'],event['newData']['rib'],event['newData']['adresse']),null,null,null,event['newData']['ville'];
+      this.fournisseur = new Fournisseur(
+        event['newData']['id'],
+        event['newData']['libelle'],
+        event['newData']['nom'],
+        event['newData']['prenom'],
+        event['newData']['nomSociete'],
+        event['newData']['mail'],
+        event['newData']['telephoneFixe'],
+        event['newData']['telephonePortable'],
+        event['newData']['rib'],
+        event['newData']['adresse']
+        , null, null, null,
+        event['newData']['ville'],
+        event['newData']['categorieCode']);
 
-    }
 
-    this.authorizationService.addFournisseur(this.fournisseur).subscribe(
-      data => {
+      this.authorizationService.getCategoriesFournisseurByName(this.fournisseur.categorieCode).subscribe(
+        data => {
+          if(data === 1){
+            this.authorizationService.addFournisseur(this.fournisseur).subscribe(
+              xx => {
+                event.confirm.resolve();
+                this.ngOnInit();
+              }, errr => {
+                event.confirm.reject();
+              });
+          }else{
+            this.requieredLine = "Categorie est inexistante";
+          }
+          }, err => {
+          event.confirm.reject();
+        });
 
-        event.confirm.resolve();
-        this.ngOnInit();
-      }, err => {
-
-        event.confirm.reject();
-      });
 
 
-
+}
   }
 
 
   // @ts-ignore
   onSaveConfirm(event) {
-    this.fournisseur = new Fournisseur(event['newData']['id'],event['newData']['libelle'], event['newData']['nom'], event['newData']['prenom'],event['newData']['nomSociete'],event['newData']['mail'],event['newData']['telephoneFixe'],event['newData']['telephonePortable'],event['newData']['rib'],event['newData']['adresse'],event['data']['createdBy'],null,event['data']['dateCreation'],event['newData']['ville']);
+    this.requieredLine ="";
+    this.fournisseur = new Fournisseur(event['newData']['id'],event['newData']['libelle'], event['newData']['nom'], event['newData']['prenom'],event['newData']['nomSociete'],event['newData']['mail'],event['newData']['telephoneFixe'],event['newData']['telephonePortable'],event['newData']['rib'],event['newData']['adresse'],event['data']['createdBy'],null,event['data']['dateCreation'],
+      event['newData']['ville'], event['newData']['categorieCode']
+      );
+    this.isVide(event['newData']['libelle'],"libelle");
+    this.isVide(event['newData']['nom'],"nom");
+    this.isVide(event['newData']['prenom'],"prenom");
+    this.isVide(event['newData']['nomSociete'],"nomSociete");
+    this.isVide(event['newData']['mail'],"mail");
+    this.isVide(event['newData']['telephonePortable'],"telephonePortable");
+    this.isVide(event['newData']['adresse'],"adresse");
+    this.isVide(event['newData']['ville'],"ville");
+    this.isVide(event['newData']['categorieCode'],"categorieCode");
+    if(this.requieredLine === "") {
+      this.authorizationService.getCategoriesFournisseurByName(this.fournisseur.categorieCode).subscribe(
+        data => {
+          if (data === 1) {
+            this.authorizationService.updateFournisseur(this.fournisseur).subscribe(
+              xx => {
+                event.confirm.resolve();
+                this.ngOnInit();
+              }, errr => {
+                event.confirm.reject();
+              });
+          } else {
+            this.requieredLine = "Categorie est inexistante";
+          }
+        }, err => {
+          event.confirm.reject();
+        });
+    }
 
-    this.authorizationService.updateFournisseur(this.fournisseur).subscribe(
+
+   /* this.authorizationService.updateFournisseur(this.fournisseur).subscribe(
       data => {
         console.log(data);
         event.confirm.resolve();
@@ -153,7 +237,7 @@ onCreateConfirm(event) {
       }, err => {
         console.log('error');
         event.confirm.reject();
-      });
+      });*/
 
   }
 

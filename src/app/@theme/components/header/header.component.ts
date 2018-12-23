@@ -6,6 +6,7 @@ import { AnalyticsService } from '../../../@core/utils/analytics.service';
 import { LayoutService } from '../../../@core/data/layout.service';
 import {AuthenticationService} from "../../../service/authentication-service";
 import {Router} from "@angular/router";
+import {BodyOutputType, Toast, ToasterConfig, ToasterService} from "angular2-toaster";
 
 @Component({
   selector: 'ngx-header',
@@ -13,10 +14,21 @@ import {Router} from "@angular/router";
   templateUrl: './header.component.html',
 })
 export class HeaderComponent implements OnInit {
+  config: ToasterConfig;
 
   @Input() position = 'normal';
-
   user: any;
+
+  title = 'HI there!';
+  content = `I'm cool toaster!`;
+
+  type = 'default';
+
+
+  types: string[] = ['default', 'info', 'success', 'warning', 'error'];
+  animations: string[] = ['fade', 'flyLeft', 'flyRight', 'slideDown', 'slideUp'];
+
+
 
   userMenu = [{ title: 'Profile' }, { title: 'Log out' }];
 name: any;
@@ -62,6 +74,7 @@ if (title === 'Log out') {
 
     return false;
   }
+
 
   goToHome() {
     this.menuService.navigateHome();

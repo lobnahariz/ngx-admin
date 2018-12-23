@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthenticationService} from "../../../service/authentication-service";
 import {Router} from "@angular/router";
+import {LigneModelComponent} from "../ligne-model/ligne-model.component";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'ngx-consulter',
@@ -13,7 +15,7 @@ import {Router} from "@angular/router";
 })
 export class ConsulterComponent implements OnInit {
 
-  constructor(private authorizationService: AuthenticationService, private router: Router) { }
+  constructor(private authorizationService: AuthenticationService, private router: Router, private modalService: NgbModal) { }
   settings = {
     actions: {
       add: false,
@@ -88,6 +90,34 @@ export class ConsulterComponent implements OnInit {
         addable: false,
         editable: false,
       },
+      createdBy: {
+        title: 'Crée Par',
+        type: 'string',
+        updateable: false,
+        addable: false,
+        editable: false,
+      },
+      modifiedBy: {
+        title: 'Modifier Par',
+        type: 'string',
+        updateable: false,
+        addable: false,
+        editable: false,
+      },
+      dateCreationAudit: {
+        title: 'Date Creation',
+        type: 'string',
+        updateable: false,
+        addable: false,
+        editable: false,
+      },
+      derniereDateModif: {
+        title: 'Derniere Date Modif',
+        type: 'string',
+        updateable: false,
+        addable: false,
+        editable: false,
+      },
     },
   };
   source: any;
@@ -102,4 +132,13 @@ export class ConsulterComponent implements OnInit {
       });
   }
 
+
+  onSaveConfirm(event) {
+    this.showLargeModal(event);
+
+  }
+    showLargeModal(event) {
+    const activeModal = this.modalService.open(LigneModelComponent, { size: 'lg', container: 'nb-layout' });
+    activeModal.componentInstance.modalHeader = "Facture N° "+event['data']['ref']+"-"+event['data']['id'];
+  }
 }

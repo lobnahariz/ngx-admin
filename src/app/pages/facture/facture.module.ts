@@ -8,6 +8,7 @@ import {Ng2SmartTableModule} from "ng2-smart-table";
 import {HttpClientModule} from "@angular/common/http";
 import {HttpModule} from "@angular/http";
 import {routedComponents} from "../facture/facture-routing.module";
+import { LigneModelComponent } from './ligne-model/ligne-model.component';
 
 @NgModule({
   imports: [
@@ -21,6 +22,10 @@ import {routedComponents} from "../facture/facture-routing.module";
   ],
   declarations: [
     ...routedComponents,
-  ]
+    LigneModelComponent,
+  ],
+  entryComponents: [
+    LigneModelComponent,
+  ],
 })
 export class FactureModule { }

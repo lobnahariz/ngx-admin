@@ -13,6 +13,12 @@ import {BonLivraisonComponent} from "../pages/bon-livraison/bon-livraison.compon
 import {FactureDocument} from "../model/factureDocument";
 import {Chart} from "../model/chart";
 import {ChartWithDate} from "../model/chartWithDate";
+import {CategorieClient} from "../model/categorieClient";
+import {CategorieFournisseur} from "../model/categorieFournisseur";
+import {CategorieProduit} from "../model/categorieProduit";
+import {ReperationDocument} from "../model/reparationDocument";
+import {Reclamation} from "../model/reclamation";
+import {User} from "../model/user";
 
 @Injectable({
   providedIn: 'root'
@@ -54,8 +60,109 @@ saveToken(jwt: string) {
   this.roles = jwtHelper.decodeToken(this.jwtToken).roles;
 }
 
+////////////////////////////////////////Reparation
+  public getReparationById(id: number): Observable<any>  {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get(this.host+'/api/reparation/getById/'+id, {headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
 
+  public getReparation(): Observable<any>  {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get(this.host+'/api/reparation', {headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
+  public addReparation(reparationDocument: ReperationDocument): Observable<ReperationDocument> {
+    if (this.jwtToken == null) this.loadToken();
+    reparationDocument.createdBy = localStorage.getItem('currentUser');
+    return this.http.post<ReperationDocument>(this.host+'/api/reparation', reparationDocument,{headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
+  public updateReparation(reparationDocument: ReperationDocument) {
+    if (this.jwtToken == null) this.loadToken();
+    reparationDocument.modifiedBy= localStorage.getItem('currentUser');
+    return this.http.put(this.host+'/api/reparation', reparationDocument,{headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
 
+  public  deleteReparation(id: number): Observable<any> {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.delete(this.host+'/api/reparation/' + id,{headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
+
+////////////////////////////////////Categorie Produit
+
+  public getCategoriesProduitByName(name: string): Observable<any>    {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get(this.host+'/api/categorieProduit/getByName/'+name, {headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
+
+  public getCategoriesProduit(): Observable<any>  {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get(this.host+'/api/categorieProduit', {headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
+  public addCategorieProduit(categorieProduit: CategorieProduit) {
+    if (this.jwtToken == null) this.loadToken();
+    categorieProduit.createdBy =localStorage.getItem('currentUser');
+    return this.http.post(this.host+'/api/categorieProduit', categorieProduit,{headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
+  public updateCategorieProduit(categorieProduit: CategorieProduit) {
+    if (this.jwtToken == null) this.loadToken();
+    categorieProduit.modifiedBy= localStorage.getItem('currentUser');
+    return this.http.put(this.host+'/api/categorieProduit', categorieProduit,{headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
+
+  public  deleteCategorieProduit(id: number): Observable<any> {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.delete(this.host+'/api/categorieProduit/' + id,{headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
+////////////////////////////////////Categorie Fournisseur
+  public getCategoriesFournisseurByName(name: string): Observable<any>    {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get(this.host+'/api/categorieFournisseur/getByName/'+name, {headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
+
+  public getCategoriesFournisseur(): Observable<any>  {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get(this.host+'/api/categorieFournisseur', {headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
+  public addCategorieFournisseur(categorieFournisseur: CategorieFournisseur) {
+    if (this.jwtToken == null) this.loadToken();
+    categorieFournisseur.createdBy =localStorage.getItem('currentUser');
+    return this.http.post(this.host+'/api/categorieFournisseur', categorieFournisseur,{headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
+  public updateCategorieFournisseur(categorieFournisseur: CategorieFournisseur) {
+    if (this.jwtToken == null) this.loadToken();
+    categorieFournisseur.modifiedBy= localStorage.getItem('currentUser');
+    return this.http.put(this.host+'/api/categorieFournisseur', categorieFournisseur,{headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
+
+  public  deleteCategorieFournisseur(id: number): Observable<any> {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.delete(this.host+'/api/categorieFournisseur/' + id,{headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
+///////////////////////////Categorie
+
+  public getCategoriesByName(name: string): Observable<any>    {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get(this.host+'/api/categorieClient/getByName/'+name, {headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
+
+  public getCategories(): Observable<any>  {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get(this.host+'/api/categorieClient', {headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
+  public addCategorieClient(categorieClient: CategorieClient) {
+    if (this.jwtToken == null) this.loadToken();
+    categorieClient.createdBy =localStorage.getItem('currentUser');
+    return this.http.post(this.host+'/api/categorieClient', categorieClient,{headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
+  public updateCategorieClient(categorieClient: CategorieClient) {
+    if (this.jwtToken == null) this.loadToken();
+    categorieClient.modifiedBy= localStorage.getItem('currentUser');
+    return this.http.put(this.host+'/api/categorieClient', categorieClient,{headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
+
+  public  deleteCategorieClient(id: number): Observable<any> {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.delete(this.host+'/api/categorieClient/' + id,{headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
 ////////////////////////////////Produit
 
   public getTotalVenteParMoisPourArticle(): Observable<ChartWithDate[]> {
@@ -268,6 +375,47 @@ saveToken(jwt: string) {
     if (this.jwtToken == null) this.loadToken();
     line.modifiedBy =localStorage.getItem('currentUser');
     return this.http.put<LineDocument>(this.host + '/api/line/'+idEntete, line,{ headers: new HttpHeaders({'Authorization': this.jwtToken}) });
+  }
+//////////////////////////////////////////////////////Reclamation
+
+
+  public getReclamations(): Observable<any>  {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get(this.host+'/api/reclamation', {headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
+  public addReclamation(reclamation: Reclamation) {
+    if (this.jwtToken == null) this.loadToken();
+    reclamation.createdBy =localStorage.getItem('currentUser');
+    return this.http.post(this.host+'/api/reclamation', reclamation,{headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
+  public updateReclamation(reclamation: Reclamation) {
+    if (this.jwtToken == null) this.loadToken();
+    reclamation.modifiedBy= localStorage.getItem('currentUser');
+    return this.http.put(this.host+'/api/reclamation', reclamation,{headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
+
+  public  deleteReclamation(id: number): Observable<any> {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.delete(this.host+'/api/reclamation/' + id,{headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
+
+/////////////////////////////////////User
+
+  public getUtilisateurs(): Observable<User>  {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get(this.host+'/api/user', {headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
+
+  public getUtilisateurByMail(mail: string,login: string): any {
+    return this.http.get(this.host+'/register/user/verifExistance/' + mail+'/'+login);
+  }
+  public  deleteUtilisateur(id: number): Observable<any> {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.delete(this.host+'/api/user/' + id,{headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
+  public updateUtilisateur(user: User) {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.put(this.host+'/api/user', user,{headers: new HttpHeaders({'Authorization': this.jwtToken})});
   }
 
   /*

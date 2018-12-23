@@ -16,7 +16,11 @@ import {DevisDocument} from "../../../model/devisDocument";
   `],
 })
 export class ModifierDevisComponent implements OnInit {
-
+  documenttotalReduction: any = 0;
+  documenttotalHT: any = 0;
+  documenttotalTVA: any = 0;
+  documenttotalTTC: any = 0;
+  documenttotalTTCReduction: any = 0;
   constructor(private authorizationService: AuthenticationService,private router:Router,private modalService: NgbModal) { }
   settings = {
     actions: {
@@ -45,7 +49,9 @@ export class ModifierDevisComponent implements OnInit {
       ref: {
         title: 'Ref',
         type: 'string',
-
+        updateable: false,
+        addable: false,
+        editable: false,
 
       },
       dateCreation: {
@@ -64,24 +70,32 @@ export class ModifierDevisComponent implements OnInit {
 
       },
       createdBy: {
-        title: 'Delai Livraison Souhaite',
+        title: 'Crée Par',
         type: 'string',
-
+        updateable: false,
+        addable: false,
+        editable: false,
       },
       modifiedBy: {
-        title: 'Delai Livraison Souhaite',
+        title: 'Modifier Par',
         type: 'string',
-
+        updateable: false,
+        addable: false,
+        editable: false,
       },
       dateCreationAudit: {
-        title: 'Delai Livraison Souhaite',
+        title: 'Date Creation',
         type: 'string',
-
+        updateable: false,
+        addable: false,
+        editable: false,
       },
       derniereDateModif: {
-        title: 'Delai Livraison Souhaite',
+        title: 'Derniere Date Modif',
         type: 'string',
-
+        updateable: false,
+        addable: false,
+        editable: false,
       },
     },
   };
@@ -112,34 +126,51 @@ export class ModifierDevisComponent implements OnInit {
 
   onSaveConfirm(event) {
     this.showLargeModal(event);
+  let  devis: DevisDocument;
+    this.authorizationService.getDevisDocumentById(event['newData']['id']).subscribe(
+      data => {
+        this.documenttotalHT = data.documenttotalHT;
+          this.documenttotalTVA = data.documenttotalTVA;
+          this.documenttotalReduction = data.documenttotalReduction;
+          this.documenttotalTTC = data.documenttotalTTC;
+          this.documenttotalTTCReduction = data.documenttotalTTCReduction;
 
-  let newDevis: DevisDocument = {
-      id: event['newData']['id'],
-      ref: event['newData']['ref'],
-      dateCreation: event['newData']['dateCreation'],
-      lieuCreation: event['newData']['lieuCreation'],
-      linesDocument: 0,
-      personId: event['newData']['personne']['id'],
-      delaiLivraisonSouhaite: event['newData']['delaiLivraisonSouhaite'],
-      achat: event['newData']['achat'],
-    documenttotalHT: event['newData']['documenttotalHT'],
-    documenttotalTVA: event['newData']['documenttotalTVA'],
-    documenttotalReduction: event['newData']['documenttotalReduction'],
-    documenttotalTTC: event['newData']['documenttotalTTC'],
-    documenttotalTTCReduction: event['newData']['documenttotalTTCReduction'],
-    createdBy: event['newData']['createdBy'],
-    dateCreationAudit: event['newData']['dateCreationAudit'],
-    };
 
-   this.authorizationService.updateEnteteDocument(newDevis)
-      .subscribe(res => {
-         this.ngOnInit();
-        },
-        err => {// @ts-ignore
-          alert("An error occurred while saving the devis"); }
-      );
 
-    event.confirm.resolve();
+        let newDevis: DevisDocument = {
+          id: event['newData']['id'],
+          ref: event['newData']['ref'],
+          dateCreation: event['newData']['dateCreation'],
+          lieuCreation: event['newData']['lieuCreation'],
+          linesDocument: 0,
+          personId: event['newData']['personne']['id'],
+          delaiLivraisonSouhaite: event['newData']['delaiLivraisonSouhaite'],
+          achat: event['newData']['achat'],
+          createdBy: event['newData']['createdBy'],
+          dateCreationAudit: event['newData']['dateCreationAudit'],
+          documenttotalHT: this.documenttotalHT,
+          documenttotalTVA: this.documenttotalTVA,
+          documenttotalReduction: this.documenttotalReduction,
+          documenttotalTTC: this.documenttotalTTC,
+          documenttotalTTCReduction: this.documenttotalTTCReduction,
+        };
+
+        this.authorizationService.updateEnteteDocument(newDevis)
+          .subscribe(res => {
+              event.confirm.resolve(newDevis);
+              this.ngOnInit();
+            },
+            err => {// @ts-ignore
+              alert("An error occurred while saving the devis"); }
+          );
+
+      },
+      err => {// @ts-ignore
+        alert("An error occurred while saving the devis"); }
+    );
+
+
+
   }
 
   showLargeModal(event) {

@@ -24,11 +24,11 @@ export class ChartjsBarHorizontalComponent implements OnDestroy {
             label: 'Retour Achat',
             backgroundColor: colors.infoLight,
             borderWidth: 1,
-            data: [this.random(), this.random(), this.random(), this.random(), this.random(), this.random()],
-          }, {
+          data: [160, 180, 120, 86, 74, 123, 176,147,178,76,84,103],
+         }, {
             label: 'Retour Vente',
             backgroundColor: colors.successLight,
-            data: [this.random(), this.random(), this.random(), this.random(), this.random(), this.random()],
+          data: [160, 180, 120, 86, 74, 123, 176,147,178,76,84,103],
           },
         ],
       };

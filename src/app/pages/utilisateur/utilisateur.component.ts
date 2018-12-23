@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'ngx-document',
+  selector: 'ngx-utilisateur',
   template: `<router-outlet></router-outlet>`,
 })
-export class DocumentComponent implements OnInit {
+export class UtilisateurComponent implements OnInit {
 
   constructor() { }
 

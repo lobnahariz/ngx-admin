@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import {AuthenticationService} from "../../../service/authentication-service";
 import {FormBuilder} from "@angular/forms";
 import {Router} from "@angular/router";
-import {BonDeLivraisonDocument} from "../../../model/BonDeLivraisonDocument";
 import {FactureDocument} from "../../../model/factureDocument";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+
+import {LigneModelComponent} from "../ligne-model/ligne-model.component";
 
 @Component({
   selector: 'ngx-modifier',
@@ -69,13 +71,41 @@ export class ModifierComponent implements OnInit {
         title: 'Date Limite Reglement',
         type: 'string',
       },
-      details:{
+      details: {
         title: 'Details',
         type: 'string',
       },
       documenttotalTTCReduction: {
         title: 'Total TTC',
         type: 'number',
+        updateable: false,
+        addable: false,
+        editable: false,
+      },
+      createdBy: {
+        title: 'Crée Par',
+        type: 'string',
+        updateable: false,
+        addable: false,
+        editable: false,
+      },
+      modifiedBy: {
+        title: 'Modifier Par',
+        type: 'string',
+        updateable: false,
+        addable: false,
+        editable: false,
+      },
+      dateCreationAudit: {
+        title: 'Date Creation',
+        type: 'string',
+        updateable: false,
+        addable: false,
+        editable: false,
+      },
+      derniereDateModif: {
+        title: 'Derniere Date Modif',
+        type: 'string',
         updateable: false,
         addable: false,
         editable: false,
@@ -182,9 +212,9 @@ this.montantSuperieur ="";
             }
           );
       }
-      ;
 
 
     }
   }
+
 }

@@ -33,7 +33,7 @@ export class EchartsAreaStackComponent implements AfterViewInit, OnDestroy {
           },
         },
         legend: {
-          data: ['Mail marketing', 'Affiliate advertising', 'Video ad', 'Direct interview', 'Search engine'],
+          data: ['HuaweiP20Lite', 'Sony XperiaXZ1', 'Asus Rog-GL703', 'Samsung-S24'],
           textStyle: {
             color: echarts.textColor,
           },
@@ -86,49 +86,34 @@ export class EchartsAreaStackComponent implements AfterViewInit, OnDestroy {
         ],
         series: [
           {
-            name: 'Mail marketing',
+            name: 'HuaweiP20Lite',
             type: 'line',
             stack: 'Total amount',
             areaStyle: { normal: { opacity: echarts.areaOpacity } },
-            data: [120, 132, 101, 134, 90, 230, 210],
+            data: [2700, 2300, 1780, 2200, 1800, 2800, 2540,3453,4423,2432,1934,3476],
           },
           {
-            name: 'Affiliate advertising',
+            name: 'Sony XperiaXZ1',
             type: 'line',
             stack: 'Total amount',
             areaStyle: { normal: { opacity: echarts.areaOpacity } },
-            data: [220, 182, 191, 234, 290, 330, 310],
+            data: [700, 800, 890, 754, 670, 800, 645,345,442,243,193,347],
           },
           {
-            name: 'Video ad',
+            name: 'Asus Rog-GL703',
             type: 'line',
             stack: 'Total amount',
             areaStyle: { normal: { opacity: echarts.areaOpacity } },
-            data: [150, 232, 201, 154, 190, 330, 410],
+            data: [2300, 2500, 1500, 3700, 2800, 1865, 2543,3345,2442,1243,983,2347],
           },
           {
-            name: 'Direct interview',
+            name: 'Samsung-S24',
             type: 'line',
-            stack: 'Total amount',
+            stack: 'Samsung-S24',
             areaStyle: { normal: { opacity: echarts.areaOpacity } },
-            data: [320, 332, 301, 334, 390, 330, 320],
+            data: [1300, 900, 1500, 700, 800, 865, 543,1245,742,843,983,2347],
           },
-          {
-            name: 'Search engine',
-            type: 'line',
-            stack: 'Total amount',
-            label: {
-              normal: {
-                show: true,
-                position: 'top',
-                textStyle: {
-                  color: echarts.textColor,
-                },
-              },
-            },
-            areaStyle: { normal: { opacity: echarts.areaOpacity } },
-            data: [820, 932, 901, 934, 1290, 1330, 1320],
-          },
+
         ],
       };
     });

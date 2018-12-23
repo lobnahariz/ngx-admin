@@ -209,4 +209,19 @@
       display: none;
     }
   }
+
+
+  /* stylelint-disable */
+  toaster-container /deep/ {
+    #toast-container .toast-close-button {
+      right: 0;
+    }
+  }
+  /* stylelint-enable */
+
+  @include media-breakpoint-down(xs) {
+    .dropdown-toggle {
+      font-size: 0.75rem;
+    }
+  }
 }

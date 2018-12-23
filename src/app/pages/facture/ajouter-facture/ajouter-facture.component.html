@@ -6,12 +6,11 @@
 
           <div class="row">
             <div class="content-row">
-              <button (click)="addDevis()" [disabled]="devisForm.pristine || devisForm.invalid" class="btn btn-hero-success main-btn">Nouvelle Facture </button>
+              <button (click)="addDevis()" [disabled]="devisForm.pristine || devisForm.invalid"  class="btn btn-hero-success main-btn">Nouvelle Facture </button>
             </div>
             <div class="content-row">
               <label class="container">
                 <nb-checkbox [(ngModel)]="theCheckbox" [ngModelOptions]="{standalone: true}" data-md-icheck (change)="toggleVisibility($event)">Achat</nb-checkbox>
-
               </label>
             </div>
             <div class="content-row">
@@ -53,7 +52,6 @@
               <div class="alert alert-danger" style="margin-top: 3px" *ngIf="devisForm.controls['ref'].invalid && (devisForm.controls['ref'].touched || devisForm.controls['ref'].dirty)">
                 Reference est Obligatoire !
               </div>
-
             </div>
 
             <div class="col-sm-3 input-group-rounded">
@@ -146,8 +144,12 @@
                   <input placeholder="date limite reglement" class="form-control" type="date"  formControlName="dateLimiteReglement"  required="true"/>
                 </div>
                 <div class="form-group">
-              <input placeholder="montant Payé" class="form-control" type="number"  formControlName="montantPaye"  required="true"/>
-            </div>
+              <input placeholder="montant Payé"  class="form-control" type="number"  formControlName="montantPaye" />
+                  <div class="alert alert-danger" style="margin-top: 3px" *ngIf="devisForm.controls['montantPaye'].invalid && (devisForm.controls['montantPaye'].touched || devisForm.controls['montantPaye'].dirty)">
+                    Montant Paye est Obligatoire !
+                  </div>
+
+                </div>
               <div class="form-group">
                 <select  (change)="modeSelectChangeHandler($event)" class="form-control">
                   <option value="">Mode Reglement :</option>

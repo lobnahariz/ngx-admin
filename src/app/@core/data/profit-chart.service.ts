@@ -36,8 +36,8 @@ array: any = [];
       chartLabel: this.period.getWeeks(),
       data: [
         this.getRandomData(nPoint),
-        this.getRandomData(nPoint),
-        this.getRandomData(nPoint),
+        this.getRandomDataNonPaye(nPoint),
+        this.getRandomDataTotal(nPoint),
       ],
     };
   }
@@ -68,19 +68,46 @@ array: any = [];
   }
 
   private getRandomData(nPoints: number): number[] {
-     this.array.push(33);
-    this.array.push(23);
-    this.array.push(334);
-    this.array.push(12);
-    this.array.push(22);
-    this.array.push(254);
-    this.array.push(65);
-    this.array.push(76);
-    this.array.push(54);
+    this.array = [];
+     this.array.push(2500);
+    this.array.push(1600);
+    this.array.push(1756);
+    this.array.push(1200);
+    this.array.push(750);
+    this.array.push(680);
+    this.array.push(1200);
 return this.array;
     // return Array.from(Array(nPoints)).map(() => {
    //   return Math.round(Math.random() * 500);
    // });
+  }
+  private getRandomDataNonPaye(nPoints: number): number[] {
+    this.array = [];
+    this.array.push(140);
+    this.array.push(50);
+    this.array.push(30);
+    this.array.push(70);
+    this.array.push(150);
+    this.array.push(80);
+    this.array.push(60);
+    return this.array;
+    // return Array.from(Array(nPoints)).map(() => {
+    //   return Math.round(Math.random() * 500);
+    // });
+  }
+  private getRandomDataTotal(nPoints: number): number[] {
+    this.array = [];
+    this.array.push(2640);
+    this.array.push(1650);
+    this.array.push(1786);
+    this.array.push(1270);
+    this.array.push(900);
+    this.array.push(760);
+    this.array.push(1260);
+    return this.array;
+    // return Array.from(Array(nPoints)).map(() => {
+    //   return Math.round(Math.random() * 500);
+    // });
   }
   private getRandomDataMonthly(nPoints: number): number[] {
     this.array.push(332);

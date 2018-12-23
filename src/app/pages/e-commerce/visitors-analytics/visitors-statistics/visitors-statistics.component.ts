@@ -50,7 +50,7 @@ export class ECommerceVisitorsStatisticsComponent implements AfterViewInit, OnDe
       },
       {
         iconColor: visitorsPieLegend.secondSection,
-        title: 'Nouveaux Services',
+        title: 'En attente',
       },
     ];
   }

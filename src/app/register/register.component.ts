@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthenticationService} from "../service/authentication-service";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 
 @Component({
@@ -20,31 +20,62 @@ message: string = "";
     this.registerForm = this.fb.group({
       email: [''],
       username: [''],
-      password: [''],
+    password: [''],
       repassword: [''],
     });
 
   }
   get f() { return this.registerForm.controls; }
 
-
-  register(user) {
-    this.submitted = true;
-
-    // stop here if form is invalid
-    if (this.registerForm.invalid) {
-      console.log("****************");
-      console.log(user+"****************");
-
-      return;
+  isVide(value: any, valeur: any) {
+    if (value === "") {
+      this.message = valeur + " est vide";
     }
-console.log(user);
-    this.appService.register(user)
+  }
+
+  isMail(value:string){
+    if(value.indexOf("@") === -1){
+      this.message = "Verifier votre email !";
+    }
+
+  }
+  register(user) {
+
+
+    this.submitted = true;
+    this.message = "";
+this.isVide(user.email,"Email");
+this.isVide(user.username,"UserName");
+    this.isVide(user.password,"Password");
+    this.isVide(user.repassword,"Repassword");
+    this.isMail(user.email);
+if(this.message === "") {
+  if (user.password === user.repassword) {
+    this.appService.getUtilisateurByMail(user.email, user.username)
       .subscribe(
         data => {
-this.message= "Votre inscription est en cours de traitement :)"
+          if (data === 1) {
+            this.message = "" + "Adresse mail ou Login existe déja!";
+            return;
+          } else {
+            user.valid ="non";
+
+            this.appService.register(user)
+              .subscribe(
+                xx => {
+                  this.message = "Votre inscription est en cours de traitement :)"
+                },
+                error => {
+                });
+          }
         },
         error => {
         });
+  } else {
+    this.message = "Verifier votre mot de passe !"
+  }
+}
+
+
   }
 }

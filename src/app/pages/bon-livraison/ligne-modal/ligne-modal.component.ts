@@ -26,7 +26,9 @@ export class LigneModalComponent implements OnInit {
   documenttotalTTCReduction: any = 0;
   nomSociete: any;
   nomPrenom: any;
-ville: any;
+  requieredLine = "";
+
+  ville: any;
 adresse: any;
   constructor(private activeModal: NgbActiveModal, private authorizationService: AuthenticationService) {}
 
@@ -112,12 +114,11 @@ adresse: any;
 typeAchatOuVente:string;
   closeModal() {
     let devisAModifier: any = "";
-    this.activeModal.close();
 
     this.authorizationService.getBonLivraisonDocumentById(this.entetId).subscribe(
       data => {
 
-        let newBonLiv: BonLivraisonComponent = {
+        let newBonLiv: BonDeLivraisonDocument = {
           id: data.id,
           ref: data.ref,
           dateCreation: data.dateCreation,
@@ -133,11 +134,15 @@ typeAchatOuVente:string;
           documenttotalReduction: this.documenttotalReduction,
           documenttotalTTC: this.documenttotalTTC,
           documenttotalTTCReduction: this.documenttotalTTCReduction,
+          createdBy: data.createdBy,
+          dateCreationAudit: data.dateCreationAudit,
         };
 
-/*
-        this.authorizationService.addBonDeLivraisonDocument(newBonLiv)
+
+        this.authorizationService.updateBonDeLivraisonDocument(newBonLiv)
           .subscribe(res => {
+              this.activeModal.close();
+
             },
             err => {
               alert("An error occurred while saving the devis");
@@ -146,7 +151,7 @@ typeAchatOuVente:string;
 
       }, err => {
         console.log("errr");
-*/
+
       });
 
   }
@@ -459,129 +464,146 @@ let y = 115;
     this.ngOnInit();
 
   }
+  isVide(value: any,valeur: any) {
+    if(value === "") {
+      this.requieredLine = valeur+" est vide";
+    }
+  }
+  isNotNumber(value: any,valeur: any){
+    if(isNaN(value)){
+      this.requieredLine = valeur+" doit etre un nombre";
+    }
+  }
 
 
   onSaveConfirm(event) {
-    const initialQte= event.data.qte;
-    this.quantiteStock="";
-    this.source.forEach(p => {
-      if (p.qte === event.data.qte && p.code === event.data.code && p.puHT === event.data.puHT && p.tva === event.data.tva) {
-        p.qte = event["newData"]["qte"];
-        const index = this.source.indexOf(p);
+    const initialQte = event.data.qte;
 
 
+    this.requieredLine = "";
 
-        this.authorizationService.getProduitByRef(event["newData"]["code"])
-          .subscribe(resultat => {
-            if(resultat === null){
-              this.produitCodeExiste = "Produit n existe pas";
-              return
-            }else{
+    this.isNotNumber(event['newData']['qte'], "Qte");
+    this.isVide(event['newData']['qte'], "Qte");
+    this.isNotNumber(event['newData']['puHT'], "PuHT");
+    this.isVide(event['newData']['puHT'], "PuHT");
+    this.isNotNumber(event['newData']['tva'], "Tva");
+    this.isVide(event['newData']['tva'], "Tva");
+    this.isNotNumber(event['newData']['reduction'], "Reduction");
+    this.isVide(event['newData']['reduction'], "Reduction");
 
-           //   if (this.requieredLine === "") {
+    if (this.requieredLine === "") {
 
-           let newLine: LineDocument = {
-          id_line: event['newData']['id_line'],
-          code: event['newData']['code'],
-          qte: event['newData']['qte'],
-          puHT: event['newData']['puHT'],
-          tva: event['newData']['tva'],
-          totalHT: event['newData']['totalHT'],
-          totalTTC: event['newData']['totalTTC'],
-          enteteId: event['newData']['enteteId'],
-          reduction: event['newData']['reduction'],
-             createdBy: event['newData']['createdBy'],
-             dateCreationAudit: event['newData']['dateCreationAudit'],
-        };
+      this.quantiteStock = "";
+      this.source.forEach(p => {
+        if (p.qte === event.data.qte && p.code === event.data.code && p.puHT === event.data.puHT && p.tva === event.data.tva) {
+          p.qte = event["newData"]["qte"];
+          const index = this.source.indexOf(p);
 
 
-        const totalHT = (event['newData']['qte'] * event['newData']['puHT']);
-        event.newData.totalHT = totalHT;
+          this.authorizationService.getProduitByRef(event["newData"]["code"])
+            .subscribe(resultat => {
+                if (resultat === null) {
+                  this.produitCodeExiste = "Produit n existe pas";
+                  return
+                } else {
 
-        newLine.totalHT = totalHT;
+                  //   if (this.requieredLine === "") {
 
-        this.documenttotalHT = this.documenttotalHT - event["data"]["totalHT"];
-        this.documenttotalHT = this.documenttotalHT + totalHT;
+                  let newLine: LineDocument = {
+                    id_line: event['newData']['id_line'],
+                    code: event['newData']['code'],
+                    qte: event['newData']['qte'],
+                    puHT: event['newData']['puHT'],
+                    tva: event['newData']['tva'],
+                    totalHT: event['newData']['totalHT'],
+                    totalTTC: event['newData']['totalTTC'],
+                    enteteId: event['newData']['enteteId'],
+                    reduction: event['newData']['reduction'],
+                    createdBy: event['newData']['createdBy'],
+                    dateCreationAudit: event['newData']['dateCreationAudit'],
+                  };
 
-        this.documenttotalTVA = this.documenttotalTVA - (event["data"]["totalHT"] * (event["data"]["tva"] / 100));
-        this.documenttotalTVA = this.documenttotalTVA + (totalHT * (newLine.tva / 100));
+                  const totalHT = (event['newData']['qte'] * event['newData']['puHT']);
+                  event.newData.totalHT = totalHT;
+
+                  newLine.totalHT = totalHT;
+
+                  this.documenttotalHT = this.documenttotalHT - event["data"]["totalHT"];
+                  console.log(this.documenttotalHT + "  ********");
+
+                  this.documenttotalHT = this.documenttotalHT + totalHT;
+
+                  this.documenttotalTVA = this.documenttotalTVA - (event["data"]["totalHT"] * (event["data"]["tva"] / 100));
+                  this.documenttotalTVA = this.documenttotalTVA + (totalHT * (newLine.tva / 100));
 
 
-        newLine.totalTTC = (totalHT + (totalHT * (newLine.tva / 100)));
-        event.newData.totalTTC = newLine.totalTTC;
+                  newLine.totalTTC = (totalHT + (totalHT * (newLine.tva / 100)));
+                  event.newData.totalTTC = newLine.totalTTC;
 
-        this.documenttotalTTC = this.documenttotalTTC - event["data"]["totalTTC"];
-        this.documenttotalTTC = this.documenttotalTTC + newLine.totalTTC;
-
-
-        this.documenttotalReduction = this.documenttotalReduction - (event["data"]["totalTTC"] * (event["data"]["reduction"] / 100));
-        const reduction = newLine.totalTTC * (newLine.reduction / 100);
-        this.documenttotalReduction = this.documenttotalReduction + reduction;
+                  this.documenttotalTTC = this.documenttotalTTC - event["data"]["totalTTC"];
+                  this.documenttotalTTC = this.documenttotalTTC + newLine.totalTTC;
 
 
-        this.documenttotalTTCReduction = this.documenttotalTTC - reduction;
-        console.log(this.documenttotalTTCReduction);
+                  this.documenttotalReduction = this.documenttotalReduction - (event["data"]["totalTTC"] * (event["data"]["reduction"] / 100));
+                  const reduction = newLine.totalTTC * (newLine.reduction / 100);
+                  this.documenttotalReduction = this.documenttotalReduction + reduction;
 
 
+                  this.documenttotalTTCReduction = this.documenttotalTTC - reduction;
+                  console.log(this.documenttotalTTCReduction);
 
-        if(this.typeAchatOuVente === "Achat"){
 
-resultat.quantite = (resultat.quantite - initialQte) + +newLine.qte;
-          this.authorizationService.updateProduit(resultat).subscribe(
-            data => {
-              console.log(data);
-              event.confirm.resolve();
-            }, err => {
-              console.log('error');
-              event.confirm.reject();
-            });
+                  if (this.typeAchatOuVente === "Achat") {
 
-        }else {
+                    resultat.quantite = (resultat.quantite - initialQte) + +newLine.qte;
+                    this.authorizationService.updateProduit(resultat).subscribe(
+                      data => {
+                        console.log(data);
+                        event.confirm.resolve();
+                      }, err => {
+                        console.log('error');
+                        event.confirm.reject();
+                      });
 
-         if( newLine.qte > (resultat.quantite + initialQte) ) {
-           this.quantiteStock = "Il vous reste en stock "+ (resultat.quantite + initialQte) +" pour "+resultat.ref;
-return
-        }else {
+                  } else {
 
-           resultat.quantite = (resultat.quantite + initialQte) - +newLine.qte;
-           this.authorizationService.updateProduit(resultat).subscribe(
-             data => {
-               console.log(data);
-               event.confirm.resolve();
-             }, err => {
-               console.log('error');
-               event.confirm.reject();
-             });
-         }
+                    if (newLine.qte > (resultat.quantite + initialQte)) {
+                      this.quantiteStock = "Il vous reste en stock " + (resultat.quantite + initialQte) + " pour " + resultat.ref;
+                      return
+                    } else {
+
+                      resultat.quantite = (resultat.quantite + initialQte) - +newLine.qte;
+                      this.authorizationService.updateProduit(resultat).subscribe(
+                        data => {
+                          console.log(data);
+                          event.confirm.resolve(newLine);
+                        }, err => {
+                          console.log('error');
+                          event.confirm.reject();
+                        });
+                    }
+                  }
+                  this.authorizationService.addLineDocument(newLine, this.entetId)
+                    .subscribe(res => {
+                        event.confirm.resolve(newLine);
+
+                        //  this.event.confirm.resolve(this.event.newData);
+                      }, error => {
+                        console.log("err");
+                        // this.event.confirm.reject();
+                      }
+                    );
+                }
+              }
+              , error => {
+                console.log("err");
+                this.produitCodeExiste = "Produit n existe pas";
+              });
+          return
         }
-        this.authorizationService.addLineDocument(newLine,  this.entetId)
-          .subscribe(res => {
-              event.confirm.resolve(event["newData"]);
-
-              //  this.event.confirm.resolve(this.event.newData);
-            },error => {
-              console.log("err");
-              // this.event.confirm.reject();
-            }
-          );
-
-
-
-           //   }
-
-
-            }
-
-            }, error => {
-              console.log("err");
-              this.produitCodeExiste = "Produit n existe pas";
-            }
-          );
-        return
-      }
-    })
+      })
+    }
   }
-
 
 
   /*

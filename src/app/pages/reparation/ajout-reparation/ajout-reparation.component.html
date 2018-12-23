@@ -1,0 +1,129 @@
+<div class="row">
+  <div class="col-lg-12">
+    <form [formGroup]="bondeLivraisonForm">
+      <nb-card>
+        <nb-card-header>
+          <div class="row">
+            <div class="content-row">
+              <button (click)="addDevis()" [disabled]="bondeLivraisonForm.pristine || bondeLivraisonForm.invalid" class="btn btn-hero-success main-btn">Nouveau Bon De Reparation </button>
+            </div>
+            <div class="content-row">
+              <label class="container">
+                <nb-checkbox [(ngModel)]="theCheckbox" (change)="toggleVisibility($event)" [ngModelOptions]="{standalone: true}" data-md-icheck >Avec accessoire</nb-checkbox>
+
+              </label>
+            </div>
+
+            <div class="col-sm-3 ">
+
+              <ng-select    placeholder="Type De Panne" class="form-control" required="true"
+                           [options]="myOptionsType"
+                           [allowClear]="true"
+                           (selected)="onSelectedPanne($event)"
+              >
+              </ng-select>
+              <div class="alert alert-danger" style="margin-top: 3px" *ngIf="requieredPanne">
+                {{requieredPanne}}
+              </div>
+
+            </div>
+          </div>
+        </nb-card-header>
+        <nb-card-body class="col-xxl">
+
+          <div class="row full-name-inputs">
+            <div class="col-sm-3 input-group-rounded">
+              <input type="text" placeholder="Reference" class="form-control"  formControlName="ref"/>
+              <div class="alert alert-danger" style="margin-top: 3px" *ngIf="bondeLivraisonForm.controls['ref'].invalid && (bondeLivraisonForm.controls['ref'].touched || bondeLivraisonForm.controls['ref'].dirty)">
+                Reference est Obligatoire !
+              </div>
+            </div>
+
+            <div class="col-sm-3 input-group-rounded">
+              <input placeholder="Date de création" class="form-control" type="date" formControlName="dateCreation" required="true"/>
+            </div>
+            <div class="col-sm-3 input-group-rounded">
+              <input placeholder="Lieu de création" class="form-control" type="text"  formControlName="lieuCreation"  required="true" />
+            </div>
+
+            <div class="col-sm-3 ">
+              <ng-select    placeholder="{{selectName}}" class="form-control"
+                            (selected)="onSelected($event)"
+                            [options]="myOptions">
+              </ng-select>
+              <div class="alert alert-danger" style="margin-top: 3px" *ngIf="requieredClient">
+                {{requieredClient}}
+              </div>
+            </div>
+
+            <div class="col-sm-3 input-group-rounded" *ngIf="theCheckbox" >
+
+              <input placeholder="Delai Reperation Souhaite" class="form-control" type="text"  formControlName="delaiRreparationSouhaite"  />
+            </div>
+            <div class="col-sm-2 input-group-rounded" *ngIf="theCheckbox" >
+              <input placeholder="Accessoire" class="form-control" type="text"  formControlName="accessoire"  />
+            </div>
+            <div class="col-sm-2 input-group-rounded" *ngIf="theCheckbox" >
+              <input placeholder="Description" class="form-control" type="text"  formControlName="receptionPersonne"  />
+            </div>
+          </div>
+
+
+          <hr/>
+
+          <nb-card-body>
+            <div class="alert alert-danger" style="margin-top: 3px" *ngIf="requieredLine">
+              {{requieredLine}}
+            </div>
+            <ng2-smart-table [settings]="settings" [source]="data" (deleteConfirm)="onDeleteConfirm($event)" (editConfirm)="onSaveConfirm($event)" (createConfirm)="onCreateConfirm($event)"></ng2-smart-table>
+          </nb-card-body>
+        </nb-card-body>
+
+        <div class="col-md-6 column">
+          <nb-card>
+            <nb-card-header>Total</nb-card-header>
+            <nb-card-body>
+              <table class="table">
+                <tbody>
+                <tr>
+                  <th>
+                    Total HT
+                  </th>
+                  <td>{{documenttotalHT| number}}</td>
+                </tr>
+                <tr>
+                  <th>
+                    Total TVA
+                  </th>
+                  <td>{{documenttotalTVA| number}}</td>
+
+                </tr>
+                <tr>
+                  <th>
+                    Reduction
+                  </th>
+                  <td>{{documenttotalReduction| number}}</td>
+
+                </tr>
+                <tr>
+                  <th>
+                    Total TTC
+                  </th>
+                  <td>{{documenttotalTTC| number}}</td>
+
+                </tr>
+                <tr>
+                  <th>
+                    TTC aprés réductions </th>
+
+                  <td>{{documenttotalTTCReduction | number}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </nb-card-body>
+          </nb-card>
+        </div>
+      </nb-card>
+    </form>
+  </div>
+</div>

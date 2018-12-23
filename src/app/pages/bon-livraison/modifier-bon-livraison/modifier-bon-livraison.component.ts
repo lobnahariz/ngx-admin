@@ -4,6 +4,7 @@ import {Router} from "@angular/router";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {BonDeLivraisonDocument} from "../../../model/BonDeLivraisonDocument";
 import {LigneModalComponent} from "../ligne-modal/ligne-modal.component";
+import {BonLivraisonComponent} from "../bon-livraison.component";
 
 @Component({
   selector: 'ngx-modifier-bon-livraison',
@@ -15,6 +16,11 @@ import {LigneModalComponent} from "../ligne-modal/ligne-modal.component";
   `],
 })
 export class ModifierBonLivraisonComponent implements OnInit {
+  documenttotalReduction: any = 0;
+  documenttotalHT: any = 0;
+  documenttotalTVA: any = 0;
+  documenttotalTTC: any = 0;
+  documenttotalTTCReduction: any = 0;
 
   constructor(private authorizationService: AuthenticationService,private router:Router,private modalService: NgbModal) {}
   settings = {
@@ -43,6 +49,9 @@ export class ModifierBonLivraisonComponent implements OnInit {
       ref: {
         title: 'Ref',
         type: 'string',
+        updateable: false,
+        addable: false,
+        editable: false,
       },
       dateCreation: {
         title: 'Date Creation',
@@ -60,7 +69,34 @@ export class ModifierBonLivraisonComponent implements OnInit {
         title: 'Personne Reception',
         type: 'string',
       },
-
+      createdBy: {
+        title: 'Crée Par',
+        type: 'string',
+        updateable: false,
+        addable: false,
+        editable: false,
+      },
+      modifiedBy: {
+        title: 'Modifier Par',
+        type: 'string',
+        updateable: false,
+        addable: false,
+        editable: false,
+      },
+      dateCreationAudit: {
+        title: 'Date Creation',
+        type: 'string',
+        updateable: false,
+        addable: false,
+        editable: false,
+      },
+      derniereDateModif: {
+        title: 'Derniere Date Modif',
+        type: 'string',
+        updateable: false,
+        addable: false,
+        editable: false,
+      },
     },
   };
   source:any;
@@ -89,36 +125,49 @@ export class ModifierBonLivraisonComponent implements OnInit {
 
   onSaveConfirm(event) {
     this.showLargeModal(event);
-    console.log(event['newData']+"*******");
 
-    let newBonDeLivraison: BonDeLivraisonDocument = {
-      id: event['newData']['id'],
-      ref: event['newData']['ref'],
-      dateCreation: event['newData']['dateCreation'],
-      lieuCreation: event['newData']['lieuCreation'],
-      linesDocument: 0,
-      accuse_reception: event['newData']['accuse_reception'],
-      receptionDate: event['newData']['receptionDate'],
-      receptionPersonne: event['newData']['receptionPersonne'],
-      achat: event['newData']['achat'],
-      personId:  event['newData']['personne']['id'],
-      documenttotalHT: event['newData']['documenttotalHT'],
-      documenttotalTVA: event['newData']['documenttotalTVA'],
-      documenttotalReduction: event['newData']['documenttotalReduction'],
-      documenttotalTTC: event['newData']['documenttotalTTC'],
-      documenttotalTTCReduction: event['newData']['documenttotalTTCReduction'],
-      createdBy: event['newData']['createdBy'],
-      dateCreationAudit: event['newData']['dateCreationAudit'],
-    };
+    this.authorizationService.getBonLivraisonDocumentById(event['newData']['id']).subscribe(
+      data => {
+        this.documenttotalHT = data.documenttotalHT;
+        this.documenttotalTVA = data.documenttotalTVA;
+        this.documenttotalReduction = data.documenttotalReduction;
+        this.documenttotalTTC = data.documenttotalTTC;
+        this.documenttotalTTCReduction = data.documenttotalTTCReduction;
 
-    this.authorizationService.updateBonDeLivraisonDocument(newBonDeLivraison)
-      .subscribe(res => {
 
-          this.ngOnInit();
+
+        let newBonDeLivraison: BonDeLivraisonDocument = {
+          id: event['newData']['id'],
+          ref: event['newData']['ref'],
+          dateCreation: event['newData']['dateCreation'],
+          lieuCreation: event['newData']['lieuCreation'],
+          linesDocument: 0,
+          accuse_reception: event['newData']['accuse_reception'],
+          receptionDate: event['newData']['receptionDate'],
+          receptionPersonne: event['newData']['receptionPersonne'],
+          achat: event['newData']['achat'],
+          personId:  event['newData']['personne']['id'],
+          documenttotalHT: this.documenttotalHT,
+          documenttotalTVA: this.documenttotalTVA,
+          documenttotalReduction: this.documenttotalReduction,
+          documenttotalTTC: this.documenttotalTTC,
+          documenttotalTTCReduction: this.documenttotalTTCReduction,
+          createdBy: event['newData']['createdBy'],
+          dateCreationAudit: event['newData']['dateCreationAudit'],
+        };
+
+        this.authorizationService.updateBonDeLivraisonDocument(newBonDeLivraison)
+          .subscribe(res => {
+              event.confirm.resolve(newBonDeLivraison);
+
+              this.ngOnInit();
+            },
+            err => {alert("An error occurred while saving the devis"); }
+          );
         },
-        err => {alert("An error occurred while saving the devis"); }
-      );
-    event.confirm.resolve();
+      err => {// @ts-ignore
+    }
+    );
   }
 
   showLargeModal(event) {

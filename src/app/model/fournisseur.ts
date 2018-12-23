@@ -13,7 +13,7 @@ export class Fournisseur {
                public modifiedBy?: string,
                public dateCreation?: string,
                public ville?: string,
-
+               public  categorieCode?: string,
 ) {
   }
 }

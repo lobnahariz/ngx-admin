@@ -37,13 +37,63 @@ export class AjoutProduitComponent implements OnInit {
         title: 'Ref',
         type: 'string',
       },
+      marque: {
+        title: 'Marque',
+        type: 'string',
+      },
       quantite: {
         title: 'Quantite',
         type: 'number',
       },
       prixUnitaire: {
-        title: 'Prix Unitaire',
+        title: 'Prix Vente',
         type: 'number',
+      },
+      categorieCode: {
+        title: 'CategorieCode',
+        type: 'string',
+      },
+      avc: {
+        title: 'Cout Moyen',
+        type: 'string',
+        updateable: false,
+        addable: false,
+        editable: false,
+      },
+      margeUnitaire: {
+        title: 'Marge Unitaire',
+        type: 'string',
+        updateable: false,
+        addable: false,
+        editable: false,
+      },
+      createdBy: {
+        title: 'Crée Par',
+        type: 'string',
+        updateable: false,
+        addable: false,
+        editable: false,
+      },
+      modifiedBy: {
+        title: 'Modifier Par',
+        type: 'string',
+        updateable: false,
+        addable: false,
+        editable: false,
+      },
+      dateCreation: {
+        title: 'Date Creation',
+        type: 'string',
+        updateable: false,
+        addable: false,
+        editable: false,
+      },
+      derniereDateModif: {
+        title: 'Derniere Date Modif',
+        type: 'string',
+        updateable: false,
+        addable: false,
+        editable: false,
       },
     },
   };
@@ -98,22 +148,36 @@ source:any;
         quantite: event['newData']['quantite'],
       prixUnitaire:event['newData']['prixUnitaire'],
         createdBy: event['newData']['createdBy'],
-        dateCreationAudit: event['newData']['dateCreationAudit'],
+      dateCreation: event['newData']['dateCreation'],
+      categorieCode: event['newData']['categorieCode'],
+      avc: event['newData']['avc'],
+      margeUnitaire: event['newData']['margeUnitaire'],
+      marque: event['newData']['marque'],
+
     };
     this.isVide(event['newData']['ref'], "Ref");
 
     this.isVide(event['newData']['quantite'], "Qte");
     this.isNotNumber(event['newData']['quantite'], "Qte");
+    this.isVide(event['newData']['categorieCode'], "CategorieCode");
 
     this.isVide(event['newData']['prixUnitaire'], "PrixUnitaire");
     this.isNotNumber(event['newData']['prixUnitaire'], "PrixUnitaire");
     if(this.verifChamps === "") {
-      this.authorizationService.addProduit(newProduit).subscribe(
+      this.authorizationService.getCategoriesProduitByName(newProduit.categorieCode).subscribe(
         data => {
-          this.ngOnInit();
-          event.confirm.resolve();
+          if(data === 1){
+            this.authorizationService.addProduit(newProduit).subscribe(
+              xx => {
+                event.confirm.resolve();
+                this.ngOnInit();
+              }, errr => {
+                event.confirm.reject();
+              });
+          }else{
+            this.verifChamps = "Categorie est inexistante";
+          }
         }, err => {
-          console.log('error');
           event.confirm.reject();
         });
     }
@@ -128,27 +192,42 @@ let   newProduit : Produit = {
       id:event['newData']['id'],
       ref:event['newData']['ref'],
       quantite: event['newData']['quantite'],
-       prixUnitaire:event['newData']['prixUnitaire'],
+       prixUnitaire: event['newData']['prixUnitaire'],
        createdBy: event['newData']['createdBy'],
-       dateCreationAudit: event['newData']['dateCreationAudit'],
-    };
+  dateCreation: event['newData']['dateCreation'],
+  categorieCode: event['newData']['categorieCode'],
+  avc: event['newData']['avc'],
+  margeUnitaire: event['newData']['margeUnitaire'],
+  marque: event['newData']['marque'],
+
+};
+console.log(newProduit+"**********");
     this.isVide(event['newData']['ref'], "Ref");
 
     this.isVide(event['newData']['quantite'], "Qte");
     this.isNotNumber(event['newData']['quantite'], "Qte");
+    this.isVide(event['newData']['categorieCode'], "CategorieCode");
 
     this.isVide(event['newData']['prixUnitaire'], "PrixUnitaire");
     this.isNotNumber(event['newData']['prixUnitaire'], "PrixUnitaire");
 
-    if(this.verifChamps === "") {
-      this.authorizationService.updateProduit(newProduit).subscribe(
-        data => {
-          this.ngOnInit();
-          event.confirm.resolve();
-        }, err => {
-          console.log('error');
-          event.confirm.reject();
-        });
+    if(this.verifChamps === ""){
+    this.authorizationService.getCategoriesProduitByName(newProduit.categorieCode).subscribe(
+      data => {
+        if(data === 1){
+          this.authorizationService.updateProduit(newProduit).subscribe(
+            xx => {
+              event.confirm.resolve();
+              this.ngOnInit();
+            }, errr => {
+              event.confirm.reject();
+            });
+        }else{
+          this.verifChamps = "Categorie est inexistante";
+        }
+      }, err => {
+        event.confirm.reject();
+      });
     }
   }
 

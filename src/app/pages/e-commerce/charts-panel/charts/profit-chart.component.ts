@@ -104,7 +104,7 @@ export class ProfitChartComponent implements AfterViewInit, OnDestroy, OnChanges
       ],
       series: [
         {
-          name: 'Canceled',
+          name: 'Total Facture Payé',
           type: 'bar',
           barGap: 0,
           barWidth: '20%',
@@ -122,7 +122,7 @@ export class ProfitChartComponent implements AfterViewInit, OnDestroy, OnChanges
           data: this.profitChartData.data[0],
         },
         {
-          name: 'Payment',
+          name: 'Total Facture Non Payé',
           type: 'bar',
           barWidth: '20%',
           itemStyle: {
@@ -139,7 +139,7 @@ export class ProfitChartComponent implements AfterViewInit, OnDestroy, OnChanges
           data: this.profitChartData.data[1],
         },
         {
-          name: 'All orders',
+          name: 'Total Facture',
           type: 'bar',
           barWidth: '20%',
           itemStyle: {

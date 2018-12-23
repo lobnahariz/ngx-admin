@@ -139,7 +139,10 @@ export class LigneModalComponent implements OnInit {
 
         this.authorizationService.getProduitByRef(event["newData"]["code"])
           .subscribe(resultat => {
-
+            if(resultat === null){
+              this.produitCodeExiste = "Produit n existe pas";
+              return
+            }else{
               this.qte = event['newData']['qte'];
               const totalHT = (event['newData']['qte'] * event['newData']['puHT']);
               event.newData.totalHT = totalHT;
@@ -189,21 +192,14 @@ export class LigneModalComponent implements OnInit {
                   resultat.quantite = (resultat.quantite + initialQte) - +event['newData']['qte'];
                   this.authorizationService.addProduit(resultat).subscribe(
                     data => {
-                      console.log(data);
                       event.confirm.resolve(event["newData"]);
-                      console.log(this.qte+"   "+this.totalHT+"   "+this.totalTTC);
-                      console.log("%%%%%%%%%%%");
-
                       return
                     }, err => {
-                      console.log('error');
                       event.confirm.reject();
                     });
                 }
-              }
+              }}
             }, error => {
-              console.log("err");
-              this.produitCodeExiste = "Produit n existe pas";
             }
           );
         return

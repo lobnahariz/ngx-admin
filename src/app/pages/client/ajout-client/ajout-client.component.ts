@@ -72,7 +72,38 @@ export class AjoutClientComponent implements OnInit {
         title: 'Adresse',
         type: 'string',
       },
-
+      categorieCode: {
+        title: 'CategorieCode',
+        type: 'string',
+      },
+      createdBy: {
+        title: 'Crée Par',
+        type: 'string',
+        updateable: false,
+        addable: false,
+        editable: false,
+      },
+      modifiedBy: {
+        title: 'Modifier Par',
+        type: 'string',
+        updateable: false,
+        addable: false,
+        editable: false,
+      },
+      dateCreation: {
+        title: 'Date Creation',
+        type: 'string',
+        updateable: false,
+        addable: false,
+        editable: false,
+      },
+      derniereDateModif: {
+        title: 'Derniere Date Modif',
+        type: 'string',
+        updateable: false,
+        addable: false,
+        editable: false,
+      },
     },
   };
 
@@ -119,8 +150,7 @@ export class AjoutClientComponent implements OnInit {
     this.isVide(event['newData']['mail'],"mail");
     this.isVide(event['newData']['telephonePortable'],"telephonePortable");
     this.isVide(event['newData']['adresse'],"adresse");
-    this.isVide(event['newData']['ville'],"ville");
-
+    this.isVide(event['newData']['categorieCode'],"categorieCode");
     if(this.requieredLine === "") {
       let newClient: Client = {
         id: null,
@@ -134,17 +164,35 @@ export class AjoutClientComponent implements OnInit {
         rib: event['newData']['rib'],
         adresse: event['newData']['adresse'],
         ville: event['newData']['ville'],
+        categorieCode: event['newData']['categorieCode'],
+
       };
 
-      this.authorizationService.addClient(newClient).subscribe(
+
+      this.authorizationService.getCategoriesByName(newClient.categorieCode).subscribe(
         data => {
-          newClient.id = data.id;
-          event.confirm.resolve();
-          this.ngOnInit();
+if(data === 1){
+  this.authorizationService.addClient(newClient).subscribe(
+    x => {
+      newClient.id = x.id;
+      event.confirm.resolve();
+      this.ngOnInit();
+    }, errr => {
+
+      event.confirm.reject();
+    });
+}else{
+  this.requieredLine = "Categorie est inexistante";
+
+}
+
+
         }, err => {
 
           event.confirm.reject();
         });
+
+
 
 
     }
@@ -158,8 +206,8 @@ export class AjoutClientComponent implements OnInit {
   }
   // @ts-ignore
   onSaveConfirm(event) {
-   // this.client = new Client(event['newData']['id'],event['newData']['libelle'], event['newData']['nom'], event['newData']['prenom'],event['newData']['nomSociete'],event['newData']['mail'],event['newData']['telephoneFixe'],event['newData']['telephonePortable'],event['newData']['rib'],event['newData']['adresse']);
-
+    // this.client = new Client(event['newData']['id'],event['newData']['libelle'], event['newData']['nom'], event['newData']['prenom'],event['newData']['nomSociete'],event['newData']['mail'],event['newData']['telephoneFixe'],event['newData']['telephonePortable'],event['newData']['rib'],event['newData']['adresse']);
+    this.requieredLine = "";
     let newClient: Client = {
       id: event['newData']['id'],
       libelle: event['newData']['libelle'],
@@ -174,20 +222,51 @@ export class AjoutClientComponent implements OnInit {
       createdBy: event['newData']['createdBy'],
       dateCreation: event['newData']['dateCreation'],
       ville: event['newData']['ville'],
+      categorieCode: event['newData']['categorieCode'],
+
     };
 
-    this.authorizationService.updateClient(newClient).subscribe(
-      data => {
-        console.log(data);
-        event.confirm.resolve();
-        this.ngOnInit();
-      }, err => {
-        console.log('error');
-        event.confirm.reject();
-      });
+    /*  this.authorizationService.updateClient(newClient).subscribe(
+        data => {
+          console.log(data);
+          event.confirm.resolve();
+          this.ngOnInit();
+        }, err => {
+          console.log('error');
+          event.confirm.reject();
+        });*/
+    this.isVide(event['newData']['libelle'], "libelle");
+    this.isVide(event['newData']['nom'], "nom");
+    this.isVide(event['newData']['prenom'], "prenom");
+    this.isVide(event['newData']['nomSociete'], "nomSociete");
+    this.isVide(event['newData']['mail'], "mail");
+    this.isVide(event['newData']['telephonePortable'], "telephonePortable");
+    this.isVide(event['newData']['adresse'], "adresse");
+    this.isVide(event['newData']['categorieCode'], "categorieCode");
+    if (this.requieredLine === "") {
+      this.authorizationService.getCategoriesByName(newClient.categorieCode).subscribe(
+        data => {
+          if (data === 1) {
+            this.authorizationService.updateClient(newClient).subscribe(
+              x => {
+                event.confirm.resolve();
+                this.ngOnInit();
+              }, errr => {
 
+                event.confirm.reject();
+              });
+          } else {
+            this.requieredLine = "Categorie est inexistante";
+
+          }
+
+
+        }, err => {
+
+          event.confirm.reject();
+        });
+    }
   }
-
 
 }
 

@@ -18,15 +18,10 @@ export class ECommerceVisitorsAnalyticsChartComponent implements AfterViewInit, 
 
   private alive = true;
   private innerLinePoints: number[] = [
-    94, 188, 225, 244, 253, 254, 249, 235, 208,
-    173, 141, 118, 105, 97, 94, 96, 104, 121, 147,
-    183, 224, 265, 302, 333, 358, 375, 388, 395,
-    400, 400, 397, 390, 377, 360, 338, 310, 278,
-    241, 204, 166, 130, 98, 71, 49, 32, 20, 13, 9,
+ 990,1300,880,570,769,450,570,879,1049,945,730,680
   ];
   private outerLinePoints: number[] = [
-    85, 71, 59, 50, 45, 42, 41, 44 , 58, 88,
-    136 , 199,
+    990,1300,880,570,769,450,570,879,1049,945,730,680
   ];
   private months: string[] = [
     'Jan', 'Feb', 'Mar',
@@ -46,11 +41,8 @@ export class ECommerceVisitorsAnalyticsChartComponent implements AfterViewInit, 
     const monthsLength = this.months.length;
 
     this.data = this.outerLinePoints.map((p, index) => {
-      const monthIndex = Math.round(index / 4);
-      const label = (index % Math.round(outerLinePointsLength / monthsLength) === 0)
-        ?  this.months[monthIndex]
-        : '';
-
+      const monthIndex = index;
+      const label =  this.months[monthIndex];
       return {
         label,
         value: p,
