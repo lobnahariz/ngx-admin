@@ -1,5 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { NbThemeService, NbColorHelper } from '@nebular/theme';
+import {AuthenticationService} from "../../../service/authentication-service";
 
 @Component({
   selector: 'ngx-chartjs-line',
@@ -12,28 +13,35 @@ export class ChartjsLineComponent implements OnDestroy {
   options: any;
   themeSubscription: any;
 
-  constructor(private theme: NbThemeService) {
+  constructor(private theme: NbThemeService,private authorizationService: AuthenticationService) {
     this.themeSubscription = this.theme.getJsTheme().subscribe(config => {
 
       const colors: any = config.variables;
       const chartjs: any = config.variables.chartjs;
+      this.authorizationService.getTotalRemiseAchat().subscribe(
+        xx => {
 
-      this.data = {
-        labels: ['Jan', 'Feb', 'March', 'Apr', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-        datasets: [{
-          data: [100, 150, 70, 120, 143, 123, 140,65,78,70,65,103],
-          label: 'Vente',
-          backgroundColor: NbColorHelper.hexToRgbA(colors.primary, 0.3),
-          borderColor: colors.primary,
-        }, {
-          data: [160, 180, 120, 86, 74, 123, 176,147,178,76,84,103],
-          label: 'Achat',
-          backgroundColor: NbColorHelper.hexToRgbA(colors.danger, 0.3),
-          borderColor: colors.danger,
-        }
-        ],
-      };
-
+          this.authorizationService.getTotalRemiseVente().subscribe(
+            yy => {
+              this.data = {
+                labels: ['Jan', 'Feb', 'March', 'Apr', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                datasets: [{
+                  data: yy,
+                  label: 'Vente',
+                  backgroundColor: NbColorHelper.hexToRgbA(colors.primary, 0.3),
+                  borderColor: colors.primary,
+                }, {
+                  data: xx,
+                  label: 'Achat',
+                  backgroundColor: NbColorHelper.hexToRgbA(colors.danger, 0.3),
+                  borderColor: colors.danger,
+                }
+                ],
+              };
+            }, errr => {
+            });
+        }, err => {
+        });
       this.options = {
         responsive: true,
         maintainAspectRatio: false,

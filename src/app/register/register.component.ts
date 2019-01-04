@@ -12,6 +12,7 @@ export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   submitted = false;
 message: string = "";
+  inscription: string = "";
   constructor( private appService: AuthenticationService,
                private fb: FormBuilder,
                private router: Router) { }
@@ -44,6 +45,7 @@ message: string = "";
 
     this.submitted = true;
     this.message = "";
+    this.inscription = "";
 this.isVide(user.email,"Email");
 this.isVide(user.username,"UserName");
     this.isVide(user.password,"Password");
@@ -63,7 +65,7 @@ if(this.message === "") {
             this.appService.register(user)
               .subscribe(
                 xx => {
-                  this.message = "Votre inscription est en cours de traitement :)"
+                  this.inscription= "Votre inscription est en cours de traitement :)";
                 },
                 error => {
                 });

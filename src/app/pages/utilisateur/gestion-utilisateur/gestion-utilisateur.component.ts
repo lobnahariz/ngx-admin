@@ -45,7 +45,7 @@ export class GestionUtilisateurComponent implements OnInit {
         addable: false,
         editable: false,
       },
-      usernametest: {
+      testlogin: {
         title: 'Login',
         type: 'string',
         updateable: false,
@@ -89,15 +89,15 @@ export class GestionUtilisateurComponent implements OnInit {
   onSaveConfirm(event) {
     this.verifChamps = "";
     let   user : User = {
-      id:event['newData']['id'],
-      email:event['newData']['email'],
-      username: event['newData']['usernameTest'],
-      password: event['newData']['password'],
+      id:event['data']['id'],
+      email:event['data']['email'],
+      username: event['data']['username'],
+      password: event['data']['password'],
       valid: event['newData']['valid'],
-      usernametest: event['newData']['usernametest'],
+      testlogin: event['data']['testlogin'],
     };
     this.isVide(event['newData']['valid'], "Valid");
-
+console.log(user);
     if(this.verifChamps === "") {
       this.authorizationService.updateUtilisateur(user).subscribe(
         data => {

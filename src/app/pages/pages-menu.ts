@@ -146,8 +146,20 @@ export const MENU_ITEMS: NbMenuItem[] = [
         link: '/pages/charts/echarts',
       },
       {
-        title: 'Achat',
+        title: 'Fournisseur',
         link: '/pages/charts/chartjs',
+      },
+      {
+        title: 'Produit',
+        link: '/pages/charts/produit',
+      },
+      {
+        title: 'Remise',
+        link: '/pages/charts/remise',
+      },
+      {
+        title: 'Avoir',
+        link: '/pages/charts/avoir',
       },
     ],
   },

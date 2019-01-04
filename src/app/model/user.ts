@@ -4,7 +4,7 @@ export class User {
   public  password?: string;
   public  email?: string;
   public  valid?: string;
-  public  usernametest?: string;
+  public  testlogin?: string;
 
 }
 

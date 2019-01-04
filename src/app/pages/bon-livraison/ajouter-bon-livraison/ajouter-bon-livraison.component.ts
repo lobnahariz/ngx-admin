@@ -322,7 +322,7 @@ articleExiste(ref: string,event:any) {
                               this.linesDocument.forEach(prod => {
                               this.bonLivraisonService.getProduitByRef(prod.code)
                                 .subscribe(ress => {
-                                  if(newBonDeLivraison.achat) {
+                                  if(newBonDeLivraison.achat === 'Achat') {
                                     ress.quantite = +prod.qte + +ress.quantite;
                                   }else{
                                     ress.quantite = +ress.quantite - +prod.qte;
@@ -443,7 +443,7 @@ articleExiste(ref: string,event:any) {
     this.isVide(event['newData']['tva'], "Tva");
     this.isNotNumber(event['newData']['reduction'], "Reduction");
     this.isVide(event['newData']['reduction'], "Reduction");
-    this.articleExiste(event['newData']['code'],event );
+    //this.articleExiste(event['newData']['code'],event );
 
     if (this.requieredLine === "") {
       this.linesDocument.forEach(p => {

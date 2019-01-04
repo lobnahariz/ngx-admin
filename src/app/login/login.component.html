@@ -14,12 +14,12 @@
 
         <div style="display:none" class="alert alert-danger col-sm-12"></div>
         <div id="login-alert" class="alert alert-danger" *ngIf="mode==1">
-        <strong>Bad Credentials !</strong>Invalid username or password
+        <strong>Merci de Verifier votre Login ou MotDePasse</strong>
       </div>
         <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
           <div *ngIf="f.username.errors.required">Login est obligatoire</div>
           <div id="login-alert" class="alert alert-danger" *ngIf="f.username.errors.required">
-            <strong>Bad Credentials !</strong>Invalid username or password
+            <strong>Merci de Verifier votre Login ou MotDePasse!</strong>
           </div>
         </div>
         <form [formGroup]="loginForm"  #b="ngForm"(ngSubmit)="onLogin(b.value)">

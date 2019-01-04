@@ -13,9 +13,11 @@
       <div class="panel-body" >
 
         <div style="display:none" class="alert alert-danger col-sm-12"></div>
-
         <div id="login-alert" class="alert alert-danger" *ngIf="message">
           <strong>{{message}}</strong>
+        </div>
+        <div  class="alert alert-danger" *ngIf="inscription !== ''">
+          <strong>{{inscription}}</strong>
         </div>
         <form [formGroup]="registerForm"  #b="ngForm"(ngSubmit)="register(b.value)" >
           <div class="form-group">

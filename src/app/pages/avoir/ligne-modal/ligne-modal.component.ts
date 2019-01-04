@@ -2,6 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {AuthenticationService} from "../../../service/authentication-service";
 import {LineDocument} from "../../../model/lineDocument";
+import {DevisDocument} from "../../../model/devisDocument";
+import {AvoirDocument} from "../../../model/avoirDocument";
+import {FactureDocument} from "../../../model/factureDocument";
+import {FormBuilder} from "@angular/forms";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'ngx-ligne-modal',
@@ -22,8 +27,8 @@ export class LigneModalComponent implements OnInit {
   totalHT: any = 0;
   totalTTC: any = 0;
   qte: any = 0;
-
-  constructor(private activeModal: NgbActiveModal, private authorizationService: AuthenticationService) {
+facture: FactureDocument;
+  constructor(private activeModal: NgbActiveModal, private authorizationService: AuthenticationService, private router: Router) {
   }
 
 
@@ -122,7 +127,6 @@ export class LigneModalComponent implements OnInit {
       data => {
         this.source = data;
       }, err => {
-        console.log("errr");
       });
   }
 
@@ -133,8 +137,6 @@ export class LigneModalComponent implements OnInit {
 
     this.source.forEach(p => {
       if (p.qte === event.data.qte && p.code === event.data.code && p.puHT === event.data.puHT && p.tva === event.data.tva) {
-        //p.qte = event["newData"]["qte"];
-       // this.index = this.source.indexOf(p);
 
 
         this.authorizationService.getProduitByRef(event["newData"]["code"])
@@ -147,7 +149,6 @@ export class LigneModalComponent implements OnInit {
               const totalHT = (event['newData']['qte'] * event['newData']['puHT']);
               event.newData.totalHT = totalHT;
               this.totalHT = totalHT;
-
               this.documenttotalHT = this.documenttotalHT - event["data"]["totalHT"];
               this.documenttotalHT = this.documenttotalHT + totalHT;
 
@@ -155,7 +156,7 @@ export class LigneModalComponent implements OnInit {
               this.documenttotalTVA = this.documenttotalTVA + (totalHT * (event['newData']['tva'] / 100));
 
               this.totalTTC = (totalHT + (totalHT * (event['newData']['tva'] / 100)));
-              event.newData.totalTTC = 99;
+              event.newData.totalTTC =  this.totalTTC;
 
               this.documenttotalTTC = this.documenttotalTTC - event["data"]["totalTTC"];
               this.documenttotalTTC = this.documenttotalTTC + this.totalTTC;
@@ -168,17 +169,24 @@ export class LigneModalComponent implements OnInit {
 
               this.documenttotalTTCReduction = this.documenttotalTTC - reduction;
 
-            if(this.typeAchatOuVente === "Achat"){
+              const valeurStock= resultat.valeurStock;
 
-                resultat.quantite = (resultat.quantite - initialQte) + +event['newData']['qte'];
+            if (this.typeAchatOuVente === "Achat"){
+
+              resultat.quantite = (resultat.quantite - initialQte) + +event['newData']['qte'];
+
+
+              resultat.valeurStock = (resultat.valeurStock  + this.totalHT  - event['data']['totalHT']) ;
+
+              resultat.avc = resultat.valeurStock / resultat.quantite;
+              resultat.margeUnitaire = resultat.prixUnitaire - resultat.avc;
+
+
                 this.authorizationService.addProduit(resultat).subscribe(
                   data => {
-                    event.confirm.resolve(event.source.newData);
-                    console.log(this.qte+"   "+this.totalHT+"   "+this.totalTTC);
-
+                    event.confirm.resolve(event["newData"]);
                     return
                   }, err => {
-                    console.log('error');
                     event.confirm.reject();
                   });
 
@@ -190,6 +198,12 @@ export class LigneModalComponent implements OnInit {
                 } else {
 
                   resultat.quantite = (resultat.quantite + initialQte) - +event['newData']['qte'];
+
+                  resultat.valeurStock = (resultat.valeurStock  - this.totalHT)  + event['data']['totalHT'] ;
+
+                  resultat.avc = resultat.valeurStock / resultat.quantite;
+                  resultat.margeUnitaire = resultat.prixUnitaire - resultat.avc;
+
                   this.authorizationService.addProduit(resultat).subscribe(
                     data => {
                       event.confirm.resolve(event["newData"]);
@@ -198,17 +212,102 @@ export class LigneModalComponent implements OnInit {
                       event.confirm.reject();
                     });
                 }
-              }}
+              }
+            p.qte = event["newData"]["qte"];
+            p.puHT = event["newData"]["puHT"];
+            p.totalHT = event["newData"]["totalHT"];
+              p.totalTTC = event["newData"]["totalTTC"];
+                p.tva = event["newData"]["tva"];
+            }
             }, error => {
             }
           );
-        return
+return
       }
     })
   }
 
-
   closeModal() {
-    this.activeModal.close();
+    let devisAModifier: any= "";
+
+    this.authorizationService.getFactureById(this.entetId).subscribe(
+      data => {
+
+        let newAvoir: AvoirDocument = {
+          id: null,
+          ref: "Avoir"+data.ref,
+          dateCreation: data.dateCreation,
+          lieuCreation:data.lieuCreation,
+          linesDocument: 0,
+          personId:data.personId,
+          achat: data.achat,
+          factureReference: data.ref,
+          documenttotalHT: this.documenttotalHT,
+          documenttotalTVA: this.documenttotalTVA,
+          documenttotalReduction: this.documenttotalReduction,
+          documenttotalTTC: this.documenttotalTTC,
+          documenttotalTTCReduction: this.documenttotalTTCReduction,
+          createdBy: data.createdBy,
+          dateCreationAudit: data.dateCreationAudit,
+        };
+
+        this.authorizationService.addAvoir(newAvoir)
+          .subscribe(res => {
+              this.source.forEach(w => {
+
+
+                let newLine: LineDocument = {
+                  id_line: null,
+                  code: w.code,
+                  qte: w.qte,
+                  puHT: w.puHT,
+                  tva: w.tva,
+                  totalHT: w.totalHT,
+                  totalTTC: w.totalTTC,
+                  enteteId: res.id,
+                  reduction: w.reduction,
+                  createdBy: w.createdBy,
+                  dateCreationAudit: w.dateCreationAudit,
+                };
+
+                this.authorizationService.addLineDocument(newLine,  res.id)
+                  .subscribe(resultat => {
+
+
+
+
+                    this.authorizationService.getFactureById(this.entetId).subscribe(
+                      fact => {
+
+                       this.facture = fact;
+                       this.facture.modifierStock = "non";
+
+                        this.authorizationService.updateFactureDocument(fact).subscribe(
+                          final => {
+                            this.activeModal.close();
+                            this.router.navigateByUrl("/pages");
+
+                          }, error => {
+
+                          });
+                      }, eror => {
+
+                      });
+                    },errror => {
+                      console.log("err");
+                      // this.event.confirm.reject();
+                    }
+                  );
+              });
+            },
+            erry => {
+            }
+          );
+
+      }, err => {
+
+      });
+
+
   }
 }

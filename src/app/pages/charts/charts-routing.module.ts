@@ -5,6 +5,9 @@ import { ChartsComponent } from './charts.component';
 import { EchartsComponent } from './echarts/echarts.component';
 import { D3Component } from './d3/d3.component';
 import { ChartjsComponent } from './chartjs/chartjs.component';
+import {ProduitComponent} from "./produit/produit.component";
+import {RemiseComponent} from "./remise/remise.component";
+import {AvoirComponent} from "./avoir/avoir.component";
 
 const routes: Routes = [{
   path: '',
@@ -18,7 +21,17 @@ const routes: Routes = [{
   }, {
     path: 'chartjs',
     component: ChartjsComponent,
-  }],
+  }, {
+    path: 'produit',
+    component: ProduitComponent,
+  }, {
+      path: 'remise',
+      component: RemiseComponent,
+    }, {
+      path: 'avoir',
+      component: AvoirComponent,
+    },
+  ],
 }];
 
 @NgModule({
@@ -32,4 +45,7 @@ export const routedComponents = [
   EchartsComponent,
   D3Component,
   ChartjsComponent,
+  ProduitComponent,
+  RemiseComponent,
+  AvoirComponent
 ];

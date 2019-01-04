@@ -1,7 +1,8 @@
 import { delay, takeWhile } from 'rxjs/operators';
-import { AfterViewInit, Component, OnDestroy } from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import { NbThemeService } from '@nebular/theme';
 import { LayoutService } from '../../../../@core/data/layout.service';
+import {AuthenticationService} from "../../../../service/authentication-service";
 
 @Component({
   selector: 'ngx-visitors-analytics-chart',
@@ -14,15 +15,13 @@ import { LayoutService } from '../../../../@core/data/layout.service';
     </div>
   `,
 })
-export class ECommerceVisitorsAnalyticsChartComponent implements AfterViewInit, OnDestroy {
+export class ECommerceVisitorsAnalyticsChartComponent implements AfterViewInit, OnDestroy, OnInit {
 
   private alive = true;
   private innerLinePoints: number[] = [
  990,1300,880,570,769,450,570,879,1049,945,730,680
   ];
-  private outerLinePoints: number[] = [
-    990,1300,880,570,769,450,570,879,1049,945,730,680
-  ];
+  private outerLinePoints: number[] = [];
   private months: string[] = [
     'Jan', 'Feb', 'Mar',
     'Apr', 'May', 'Jun',
@@ -36,24 +35,32 @@ export class ECommerceVisitorsAnalyticsChartComponent implements AfterViewInit, 
   echartsIntance: any;
 
   constructor(private theme: NbThemeService,
-              private layoutService: LayoutService) {
-    const outerLinePointsLength = this.outerLinePoints.length;
-    const monthsLength = this.months.length;
+              private layoutService: LayoutService, private authorizationService: AuthenticationService) {
+  }
 
-    this.data = this.outerLinePoints.map((p, index) => {
-      const monthIndex = index;
-      const label =  this.months[monthIndex];
-      return {
-        label,
-        value: p,
-      };
-    });
+    ngOnInit(): void {
+      this.authorizationService.getTotalReparationFinis().subscribe(
+        XX => {
+          this.outerLinePoints = XX;
 
-    this.layoutService.onChangeLayoutSize()
-      .pipe(
-        takeWhile(() => this.alive),
-      )
-      .subscribe(() => this.resizeChart());
+          this.data = this.outerLinePoints.map((p, index) => {
+
+            const monthIndex = index;
+            const label =  this.months[monthIndex];
+            return {
+              label,
+              value: p,
+            };
+          });
+
+
+          this.layoutService.onChangeLayoutSize()
+            .pipe(
+              takeWhile(() => this.alive),
+            )
+            .subscribe(() => this.resizeChart());
+        }, errr => {
+        });
   }
 
   ngAfterViewInit(): void {

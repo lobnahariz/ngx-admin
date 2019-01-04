@@ -1,7 +1,8 @@
-import { AfterViewInit, Component, OnDestroy } from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import { NbThemeService } from '@nebular/theme';
 import { delay, takeWhile } from 'rxjs/operators';
 import { LayoutService } from '../../../../@core/data/layout.service';
+import {AuthenticationService} from "../../../../service/authentication-service";
 
 
 @Component({
@@ -9,22 +10,27 @@ import { LayoutService } from '../../../../@core/data/layout.service';
   styleUrls: ['./visitors-statistics.component.scss'],
   templateUrl: './visitors-statistics.component.html',
 })
-export class ECommerceVisitorsStatisticsComponent implements AfterViewInit, OnDestroy {
+export class ECommerceVisitorsStatisticsComponent implements AfterViewInit, OnDestroy, OnInit {
 
   private alive = true;
   private value = 75;
+enCoursValue: any = 0;
+  nouvelleValue: any = 0;
 
+enAttenteValue: any = 0;
   option: any = {};
   chartLegend: {iconColor: string; title: string}[];
   echartsIntance: any;
 
   constructor(private theme: NbThemeService,
-              private layoutService: LayoutService) {
+              private layoutService: LayoutService, private authorizationService: AuthenticationService) {
     this.layoutService.onChangeLayoutSize()
       .pipe(
         takeWhile(() => this.alive),
       )
       .subscribe(() => this.resizeChart());
+
+
   }
 
   ngAfterViewInit() {
@@ -210,5 +216,25 @@ export class ECommerceVisitorsStatisticsComponent implements AfterViewInit, OnDe
 
   ngOnDestroy() {
     this.alive = false;
+  }
+
+  ngOnInit(): void {
+    this.authorizationService.getNombreReparationEncours().subscribe(
+      xx => {
+        this.enCoursValue = xx;
+      }, errr => {
+      });
+
+    this.authorizationService.getNombreReparationEnAttente().subscribe(
+      yy => {
+        this.enAttenteValue = yy;
+      }, erry => {
+      });
+
+    this.authorizationService.getNombreReparationNouvelle().subscribe(
+      z => {
+        this.nouvelleValue = z;
+      }, erry => {
+      });
   }
 }

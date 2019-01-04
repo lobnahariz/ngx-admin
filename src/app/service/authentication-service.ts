@@ -19,6 +19,8 @@ import {CategorieProduit} from "../model/categorieProduit";
 import {ReperationDocument} from "../model/reparationDocument";
 import {Reclamation} from "../model/reclamation";
 import {User} from "../model/user";
+import {AvoirModule} from "../pages/avoir/avoir.module";
+import {AvoirDocument} from "../model/avoirDocument";
 
 @Injectable({
   providedIn: 'root'
@@ -65,7 +67,39 @@ saveToken(jwt: string) {
     if (this.jwtToken == null) this.loadToken();
     return this.http.get(this.host+'/api/reparation/getById/'+id, {headers: new HttpHeaders({'Authorization': this.jwtToken})});
   }
+  public getTotalReparationFinis(): Observable<any>  {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get(this.host+'/api/reparation/getTotalReparationFinis', {headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
+  public getNombreReparationEncours(): any  {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get(this.host+'/api/reparation/getNombreReparationEncours', {headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
+  public getNombreReparationNouvelle(): any  {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get(this.host+'/api/reparation/getNombreReparationNouvelle', {headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
 
+  public getNombreReparationEnAttente(): any  {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get(this.host+'/api/reparation/getNombreReparationEnAttente', {headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
+  public getTotalTodayReparation(): any  {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get(this.host+'/api/reparation/getTotalTodayReparation', {headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
+  public getGainTodayReparation(): any  {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get(this.host+'/api/reparation/getGainTodayReparation', {headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
+  public getGainYesterdayReparation(): any  {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get(this.host+'/api/reparation/getGainYesterdayReparation', {headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
+  public getTotalYesterdayReparation(): any  {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get(this.host+'/api/reparation/getTotalYesterdayReperation', {headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
   public getReparation(): Observable<any>  {
     if (this.jwtToken == null) this.loadToken();
     return this.http.get(this.host+'/api/reparation', {headers: new HttpHeaders({'Authorization': this.jwtToken})});
@@ -313,6 +347,31 @@ saveToken(jwt: string) {
     if (this.jwtToken == null) this.loadToken();
     return this.http.get<FactureDocument[]>(this.host + '/api/facture/NotPayed',{ headers: new HttpHeaders({'Authorization': this.jwtToken}) });
   }
+  public getFournisseurNotPayed(): Observable<any> {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get(this.host + '/api/facture/getFournisseurNotPayed',{ headers: new HttpHeaders({'Authorization': this.jwtToken}) });
+  }
+  public getTotalRemiseAchat(): Observable<any> {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get(this.host + '/api/facture/getTotalRemiseAchat',{ headers: new HttpHeaders({'Authorization': this.jwtToken}) });
+  }
+  public getTotalRemiseVente(): Observable<any> {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get(this.host + '/api/facture/getTotalRemiseVente',{ headers: new HttpHeaders({'Authorization': this.jwtToken}) });
+  }
+  public getValueNotPayed(): Observable<any> {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get(this.host + '/api/facture/getValueNotPayed',{ headers: new HttpHeaders({'Authorization': this.jwtToken}) });
+  }
+
+  public getTopFournisseur(): Observable<any> {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get(this.host + '/api/facture/getTopFournisseur',{ headers: new HttpHeaders({'Authorization': this.jwtToken}) });
+  }
+  public getTopValue(): Observable<any> {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get(this.host + '/api/facture/getTopValue',{ headers: new HttpHeaders({'Authorization': this.jwtToken}) });
+  }
 
   public getFactureWithNoStockUpdate(): Observable<FactureDocument[]> {
     if (this.jwtToken == null) this.loadToken();
@@ -365,8 +424,14 @@ saveToken(jwt: string) {
     if (this.jwtToken == null) this.loadToken();
     return this.http.get(this.host + '/api/line/byEntete/'+id,{ headers: new HttpHeaders({'Authorization': this.jwtToken}) });
   }
-
-
+  public getTotalByProduitByAchat(code: string):  Observable<any>  {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get(this.host + '/api/line/getTotalByProduitByAchat/'+code,{ headers: new HttpHeaders({'Authorization': this.jwtToken}) });
+  }
+  public getTotalByProduitByVente(code: string):  Observable<any>  {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get(this.host + '/api/line/getTotalByProduitByVente/'+code,{ headers: new HttpHeaders({'Authorization': this.jwtToken}) });
+  }
   public  deleteLine(id: number): Observable<any> {
     if (this.jwtToken == null) this.loadToken();
     return this.http.delete(this.host+'/api/line/' + id,{headers: new HttpHeaders({'Authorization': this.jwtToken})});
@@ -418,6 +483,81 @@ saveToken(jwt: string) {
     return this.http.put(this.host+'/api/user', user,{headers: new HttpHeaders({'Authorization': this.jwtToken})});
   }
 
+  ///////////////////////////////Avoir
+  public getAllAvoirAchat(): Observable<AvoirModule>  {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get(this.host+'/api/avoir/getAllAvoirAchat', {headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
+  public getAllAvoirVente(): Observable<AvoirModule>  {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get(this.host+'/api/avoir/getAllAvoirVente', {headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
+
+  public addAvoir(avoir: AvoirDocument): Observable<AvoirDocument>  {
+    if (this.jwtToken == null) this.loadToken();
+    avoir.createdBy =localStorage.getItem('currentUser');
+    return this.http.post<AvoirDocument>(this.host+'/api/avoir', avoir,{headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
+
+  public getAvoir(): Observable<AvoirDocument[]> {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get<AvoirDocument[]>(this.host + '/api/avoir',{ headers: new HttpHeaders({'Authorization': this.jwtToken}) });
+  }
+
+  public getAvoirById(id: number): Observable<AvoirDocument>  {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get<AvoirDocument>(this.host + '/api/avoir/getById/'+id,{ headers: new HttpHeaders({'Authorization': this.jwtToken}) });
+  }
+
+  public getTotalAchatFactureNonPayeParMois(): Observable<any>  {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get(this.host+'/api/facture/getTotalAchatFactureNonPayeParMois', {headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
+  public getTotalAchatFacturePayeParMois(): Observable<any>  {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get(this.host+'/api/facture/getTotalAchatFacturePayeParMois', {headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
+
+  public getTotalAchatFacturePayeEtNonPayeParMois(): Observable<any>  {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get(this.host+'/api/facture/getTotalAchatFacturePayeEtNonPayeParMois', {headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
+
+
+
+  public getTotalAchatPayeParSemaine(): Observable<any>  {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get(this.host+'/api/facture/getTotalAchatPayeParSemaine', {headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
+  public getTotalAchatNonPayeParSemaine(): Observable<any>  {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get(this.host+'/api/facture/getTotalAchatNonPayeParSemaine', {headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
+
+  public getTotalAchatFacturePayeEtNonPayeParSemaine(): Observable<any>  {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get(this.host+'/api/facture/getTotalAchatFacturePayeEtNonPayeParSemaine', {headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
+
+
+
+  public getTotalAchatNonPayeParAnnee(): Observable<any>  {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get(this.host+'/api/facture/getTotalAchatNonPayeParAnnee', {headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
+  public getTotalAchatPayeParAnnee(): Observable<any>  {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get(this.host+'/api/facture/getTotalAchatPayeParAnnee', {headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
+
+  public getTotalAchatFacturePayeEtNonPayeParAnnee(): Observable<any>  {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get(this.host+'/api/facture/getTotalAchatFacturePayeEtNonPayeParAnnee', {headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
+  public getYears(): Observable<any>  {
+    if (this.jwtToken == null) this.loadToken();
+    return this.http.get(this.host+'/api/facture/getYears', {headers: new HttpHeaders({'Authorization': this.jwtToken})});
+  }
   /*
   getTasks(){
     if(this.jwtToken == null) this.loadToken();

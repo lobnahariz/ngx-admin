@@ -41,17 +41,27 @@ export class AjoutProduitComponent implements OnInit {
         title: 'Marque',
         type: 'string',
       },
-      quantite: {
-        title: 'Quantite',
-        type: 'number',
+      categorieCode: {
+        title: 'CategorieCode',
+        type: 'string',
       },
       prixUnitaire: {
         title: 'Prix Vente',
         type: 'number',
       },
-      categorieCode: {
-        title: 'CategorieCode',
+      quantite: {
+        title: 'Quantite En Stock',
+        type: 'number',
+        updateable: false,
+        addable: false,
+        editable: false,
+      },
+      valeurStock: {
+        title: 'Valeur Stock',
         type: 'string',
+        updateable: false,
+        addable: false,
+        editable: false,
       },
       avc: {
         title: 'Cout Moyen',
@@ -153,15 +163,13 @@ source:any;
       avc: event['newData']['avc'],
       margeUnitaire: event['newData']['margeUnitaire'],
       marque: event['newData']['marque'],
-
+      valeurStock:event['newData']['valeurStock'],
     };
     this.isVide(event['newData']['ref'], "Ref");
 
-    this.isVide(event['newData']['quantite'], "Qte");
-    this.isNotNumber(event['newData']['quantite'], "Qte");
     this.isVide(event['newData']['categorieCode'], "CategorieCode");
 
-    this.isVide(event['newData']['prixUnitaire'], "PrixUnitaire");
+    this.isVide(event['newData']['prixUnitaire'], "PrixVente");
     this.isNotNumber(event['newData']['prixUnitaire'], "PrixUnitaire");
     if(this.verifChamps === "") {
       this.authorizationService.getCategoriesProduitByName(newProduit.categorieCode).subscribe(
@@ -199,16 +207,15 @@ let   newProduit : Produit = {
   avc: event['newData']['avc'],
   margeUnitaire: event['newData']['margeUnitaire'],
   marque: event['newData']['marque'],
+  valeurStock:event['newData']['valeurStock'],
 
 };
 console.log(newProduit+"**********");
     this.isVide(event['newData']['ref'], "Ref");
 
-    this.isVide(event['newData']['quantite'], "Qte");
-    this.isNotNumber(event['newData']['quantite'], "Qte");
     this.isVide(event['newData']['categorieCode'], "CategorieCode");
 
-    this.isVide(event['newData']['prixUnitaire'], "PrixUnitaire");
+    this.isVide(event['newData']['prixUnitaire'], "PrixVente");
     this.isNotNumber(event['newData']['prixUnitaire'], "PrixUnitaire");
 
     if(this.verifChamps === ""){

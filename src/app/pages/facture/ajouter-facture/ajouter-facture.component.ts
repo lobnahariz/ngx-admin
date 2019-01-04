@@ -282,16 +282,30 @@ this.modeSelected =  event.target.value;
                               this.linesDocument.forEach(prod => {
                                 this.devisService.getProduitByRef(prod.code)
                                   .subscribe(ress => {
-                                    if (newFacture.achat) {
+                                    if (newFacture.achat === 'Achat') {
                                       ress.quantite = +prod.qte + +ress.quantite;
+ress.valeurStock = ress.valeurStock + prod.totalHT;
+
+ress.avc = ress.valeurStock / ress.quantite;
+ress.margeUnitaire = ress.prixUnitaire - ress.avc;
+                                      this.devisService.updateProduit(ress).subscribe(
+                                        d => {
+                                        }, err => {
+                                          console.log('error');
+                                        });
                                     } else {
                                       ress.quantite = +ress.quantite - +prod.qte;
+                                      ress.valeurStock = ress.valeurStock - prod.totalHT;
+
+                                      ress.avc = ress.valeurStock / ress.quantite;
+                                      ress.margeUnitaire = ress.prixUnitaire - ress.avc;
+
+                                      this.devisService.updateProduit(ress).subscribe(
+                                        d => {
+                                        }, err => {
+                                          console.log('error');
+                                        });
                                     }
-                                    this.devisService.addProduit(ress).subscribe(
-                                      d => {
-                                      }, err => {
-                                        console.log('error');
-                                      });
                                     //  this.event.confirm.resolve(this.event.newData);
                                   }, error => {
                                     console.log("err");
@@ -485,7 +499,7 @@ this.documenttotalTTCReduction = this.documenttotalTTCReduction +  (newLine.tota
     this.isVide(event['newData']['tva'], "Tva");
     this.isNotNumber(event['newData']['reduction'], "Reduction");
     this.isVide(event['newData']['reduction'], "Reduction");
-    this.articleExiste(event['newData']['code'], event );
+  //  this.articleExiste(event['newData']['code'], event );
 
     if (this.requieredLine === "") {
 
@@ -544,7 +558,7 @@ this.documenttotalTTCReduction = this.documenttotalTTCReduction +  (newLine.tota
 
                 event.confirm.resolve(event["newData"]);
               }else{
-
+this.produitCodeExiste = "Produit n existe pas";
                 this.requieredLine = "Produit est inexistant";
               }
             }, errr => {

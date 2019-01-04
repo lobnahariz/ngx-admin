@@ -5,6 +5,7 @@ import { AvoirRoutingModule,routedComponents } from './avoir-routing.module';
 import {ThemeModule} from "../../@theme/theme.module";
 import {Ng2SmartTableModule} from "ng2-smart-table";
 import { LigneModalComponent } from './ligne-modal/ligne-modal.component';
+import { LigneConsultationComponent } from './ligne-consultation/ligne-consultation.component';
 
 @NgModule({
   imports: [
@@ -17,9 +18,11 @@ import { LigneModalComponent } from './ligne-modal/ligne-modal.component';
   declarations: [
     ...routedComponents,
     LigneModalComponent,
+    LigneConsultationComponent,
   ],
   entryComponents: [
     LigneModalComponent,
+    LigneConsultationComponent,
   ],
 })
 export class AvoirModule { }

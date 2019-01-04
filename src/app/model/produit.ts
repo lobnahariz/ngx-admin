@@ -9,6 +9,7 @@ export class Produit {
   public  categorieCode?: string;
   public  avc?: number;
   public  margeUnitaire?: number;
+  public  valeurStock?: number;
   public  marque?: string;
 
 }
